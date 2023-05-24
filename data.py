@@ -4,7 +4,7 @@ from urllib.request import urlopen, Request
 import time
 
 # قراءة الملف الحالي
-with open("witanime.json", "r", encoding="utf-8") as file:
+with open("database/witanime.json", "r", encoding="utf-8") as file:
     current_data = json.load(file)
 
 links = "https://witanime.com/anime-status/%d9%8a%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d8%a7%d9%86/"
@@ -133,7 +133,7 @@ data.append(current_data)
 time.sleep(2)
 
 # حفظ الملف النهائي
-with open("witanime.json", "w", encoding="utf-8") as file:
+with open("database/witanime.json", "w", encoding="utf-8") as file:
     json.dump(data, file, ensure_ascii=False, indent=4)
 
 print("تم حفظ المعلومات بنجاح في ملف JSON.")
