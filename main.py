@@ -460,6 +460,10 @@ def backup_subscribed_users():
 def backup_data():
 	bk = open('database/witanime.json', 'r')
 	bot.send_document(developer_id, bk)
+	bk2 = open('database/rate.json', 'r')
+	bot.send_document(developer_id, bk2)
+	bk3 = open('database/database.json', 'r')
+	bot.send_document(developer_id, bk3)
 def add_admin(message):
     if message.text == "cancel":
         bot.reply_to(message, f"تم الالغاء")
