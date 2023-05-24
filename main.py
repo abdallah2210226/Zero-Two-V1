@@ -29,7 +29,7 @@ ping_photo = "https://telegra.ph//file/8fe4f9f6c2b0135b67085.jpg"
 start_photo = "https://telegra.ph//file/61904cf0cb3b74844679d.jpg"
 help_photo = "https://telegra.ph//file/7588af20e99f430ab4c7e.jpg"
 
-TOKEN = "5194344713:AAG1fD75YKMbIPSaHxx4TpqS2qz67QEbza8"
+TOKEN = "5081332593:AAF0abi-h1XG66zYQ-m8iK7sQm5eIS_y8fU"
 bot = telebot.TeleBot(TOKEN)
 current_page = 1
 episodes = []
@@ -88,14 +88,6 @@ def bot_sys_stats():
 	RAM = f"{mem}%"
 	DISK = f"{disk}%"
 	return UP, CPU, RAM, DISK
-
-
-
-
-
-
-
-
 
 bot.set_my_commands(commands=[telebot.types.BotCommand('start','إبدأ ⚡️')
 	,telebot.types.BotCommand('avatar','أفاتارت أنمي🖼')
@@ -216,10 +208,11 @@ def create_keyboard(title,episodes, current_page,found_anime):
     # إضافة أزرار التنقل بين الصفحات
     navigation_buttons = []
     if current_page > 1:
+        navigation_buttons.append(InlineKeyboardButton("«««", callback_data="previousss"))
         navigation_buttons.append(InlineKeyboardButton("السابق", callback_data="previous"))
     if current_page < total_pages:
         navigation_buttons.append(InlineKeyboardButton("التالي", callback_data="next"))
-
+        navigation_buttons.append(InlineKeyboardButton("»»»", callback_data="nexttt"))
     if navigation_buttons:
         keyboard.row(*navigation_buttons)
 
@@ -320,6 +313,7 @@ def create_keyboard(title,episodes, current_page,found_anime):
     keyboard.add(threestar,fourstar,fivestar)
 
     return keyboard
+
 def is_user_subscribed(user_id, channel_id):
     chat_member = bot.get_chat_member(channel_id, user_id)
     if chat_member.status == 'left' or chat_member.status == 'kicked':
@@ -756,7 +750,6 @@ def handle_all_messages(message):
                                 tit = anime['Title']
                                 if tit not in added_titles:  # التحقق من عدم تكرار العناوين
                                     button = InlineKeyboardButton(anime['Title'], callback_data=f"¥{tit}")
-                                    print(button)
                                     keyboard.add(button)
                                     added_titles.add(tit)  # إضافة العنوان إلى المجموعة المضافة
                     
@@ -1352,7 +1345,7 @@ def callback_query(call):
     ◎ ─━───━─ 𖡦─━───━─ ◎ 
 ⿻ التصنيف : {genres}
 {info}"""
-            print(len(response))
+            
             bot.send_photo(call.message.chat.id, image, caption=response, reply_markup=keyboard)
     if call.data == "next":
         bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
@@ -1360,10 +1353,23 @@ def callback_query(call):
         keyboard = create_keyboard(title,episodes, current_page,found_anime)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
+    if call.data == "nexttt":
+        bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
+        current_page = (len(episodes) + 36 - 1) // 36
+        keyboard = create_keyboard(title,episodes, current_page,found_anime)
+        bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                    reply_markup=keyboard)
+    elif call.data == "previousss":
+        bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
+        time.sleep(.1)
+        current_page  = 1
+        keyboard = create_keyboard(title,episodes, current_page,found_anime)
+        bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                    reply_markup=keyboard)
     elif call.data == "previous":
         bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
         time.sleep(.1)
-        current_page -= 1
+        current_page  -= 1
         keyboard = create_keyboard(title,episodes, current_page,found_anime)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
