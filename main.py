@@ -874,7 +874,7 @@ def callback_query(call):
             bot.send_message(call.message.chat.id, "مرحبًا بك في بوت مشاهدة الأنمي!", reply_markup=markup)
 
         else:
-            bot.answer_callback_query(call.id, "أنت لم تشترك في جميع القنوات المطلوبة بعد.")
+            bot.answer_callback_query(call.id, "أنت لم تشترك في جميع القنوات المطلوبة بعد.", show_alert=True)
 
     with open("database/witanime.json", "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -894,10 +894,10 @@ def callback_query(call):
             if "watched" in users[str(user_id)]:
                 if watchedanime in users[str(user_id)]["watched"]:
                     users[str(user_id)]["watched"].remove(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                 else:
                     users[str(user_id)]["watched"].append(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
             else:
                 users[str(user_id)]["watched"] = [watchedanime]
         else:
@@ -921,11 +921,11 @@ def callback_query(call):
             if "watching" in users[str(user_id)]:
                 if watchedanime in users[str(user_id)]["watching"]:
                     users[str(user_id)]["watching"].remove(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
 
                 else:
                     users[str(user_id)]["watching"].append(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
             else:
                 users[str(user_id)]["watching"] = [watchedanime]
         else:
@@ -949,10 +949,10 @@ def callback_query(call):
             if "favorite" in users[str(user_id)]:
                 if watchedanime in users[str(user_id)]["favorite"]:
                     users[str(user_id)]["favorite"].remove(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                 else:
                     users[str(user_id)]["favorite"].append(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
             else:
                 users[str(user_id)]["favorite"] = [watchedanime]
         else:
@@ -976,10 +976,10 @@ def callback_query(call):
             if "upcoming" in users[str(user_id)]:
                 if watchedanime in users[str(user_id)]["upcoming"]:
                     users[str(user_id)]["upcoming"].remove(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                    bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                 else:
                     users[str(user_id)]["upcoming"].append(watchedanime)
-                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                    bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
             else:
                 users[str(user_id)]["upcoming"] = [watchedanime]
         else:
@@ -1008,34 +1008,34 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى")
+                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى", show_alert=True)
                                 return
 
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
-            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
         else:
             for item in data:
                 if item.get(rating):
                     if item[rating].get(watchedanime):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
-                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
-                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
@@ -1062,34 +1062,34 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى")
+                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى", show_alert=True)
                                 return
 
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
-            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
         else:
             for item in data:
                 if item.get(rating):
                     if item[rating].get(watchedanime):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
-                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
-                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
@@ -1116,34 +1116,34 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى")
+                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى", show_alert=True)
                                 return
 
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
-            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
         else:
             for item in data:
                 if item.get(rating):
                     if item[rating].get(watchedanime):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
-                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
-                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
@@ -1170,34 +1170,34 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى")
+                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى", show_alert=True)
                                 return
 
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
-            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
         else:
             for item in data:
                 if item.get(rating):
                     if item[rating].get(watchedanime):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
-                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
-                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
@@ -1224,29 +1224,29 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى")
+                                bot.answer_callback_query(call.id, "لا يمكنك التصويت مرة أخرى", show_alert=True)
                                 return
 
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
-            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
         else:
             for item in data:
                 if item.get(rating):
                     if item[rating].get(watchedanime):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه")
+                            bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
-                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                            bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
-                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
+                        bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
 
                         break
             else:
@@ -1455,7 +1455,7 @@ def callback_query(call):
             bot.register_next_step_handler(call.message, add_admin)
         elif call.data == "viewadmins":
             # إجراء عرض المشرفين
-            bot.answer_callback_query(call.id, "جارٍ عرض المشرفين.ارسل `cancel` للالغاء",parse_mode="markdown")
+            bot.answer_callback_query(call.id, "جارٍ عرض المشرفين")
             view_admins(call.message)
         elif call.data == "deleteadmin":
             # إجراء حذف مشرف
@@ -1475,7 +1475,7 @@ def callback_query(call):
         elif call.data == "sub":
             view_subscribed_users(call.message)
     else:
-        bot.answer_callback_query(call.id, "عذرًا، هذا الأمر مخصص للمشرفين والمطور فقط.")
+        bot.answer_callback_query(call.id, "عذرًا، هذا الأمر مخصص للمشرفين والمطور فقط.", show_alert=True)
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message):
 	bot.delete_message(message.chat.id, message.message_id)
