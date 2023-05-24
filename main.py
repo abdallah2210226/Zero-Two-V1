@@ -464,7 +464,7 @@ def backup_subscribed_users():
 	bk = open('database/subscribed_users.json', 'r')
 	bot.send_document(developer_id, bk)
 def backup_data():
-	bk = open('database/animes.json', 'r')
+	bk = open('database/witanime.json', 'r')
 	bot.send_document(developer_id, bk)
 def add_admin(message):
     if message.text == "cancel":
@@ -1443,11 +1443,11 @@ def callback_query(call):
             bot.register_next_step_handler(call.message, forward_message)
         elif call.data == "backup":
             # إجراء النسخة الاحتياطية
-            bot.answer_callback_query(call.id, "تم حفظ نسخة احتياطية.ارسل `cancel` للالغاء",parse_mode="markdown")
+            bot.answer_callback_query(call.id, "تم حفظ نسخة احتياطية ")
             backup_subscribed_users()
         elif call.data == "backupdata":
             # إجراء النسخة الاحتياطية
-            bot.answer_callback_query(call.id, "تم حفظ نسخة احتياطية.ارسل `cancel` للالغاء",parse_mode="markdown")
+            bot.answer_callback_query(call.id, "تم حفظ نسخة احتياطيةل ")
             backup_data()
         elif call.data == "addadmin":
             # إجراء إضافة مشرف
