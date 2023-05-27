@@ -1,28 +1,22 @@
 import telebot
 from telebot import types
 import requests
-import requests
 from bs4 import BeautifulSoup
 import re
 import random
 from datetime import datetime
-from time import time
-from telebot import TeleBot
-from datetime import date, timedelta
-from datetime import datetime
-import os, time
-from typing import Union
+import time
 import sys
 from PIL import Image, ImageDraw,ImageFont
 import arabic_reshaper
 from bidi.algorithm import get_display
 import json
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from telebot import types
 from fuzzywuzzy import process
 import psutil
 import arabic_reshaper
 from googletrans import Translator
+
 start2 = time.time()
 
 ping_photo = "https://telegra.ph//file/8fe4f9f6c2b0135b67085.jpg"
@@ -171,7 +165,6 @@ def read_database():
     except FileNotFoundError:
         database = {}
     return database
-
 
 def create_keyboard(title,episodes, current_page,found_anime):
     buttons_per_page = 36  # عدد الأزرار في كل صفحة
@@ -687,7 +680,6 @@ def handle_all_messages(message):
     global id
     with open("database/witanime.json", "r", encoding="utf-8") as f:
         data = json.load(f)
-
     if message.chat.type == "private":
         id = message.from_user.id
         user_id = message.from_user.id
@@ -710,18 +702,16 @@ def handle_all_messages(message):
         else:
             save_user_subscription(user_id)
             if message.reply_to_message and message.reply_to_message.text == 'ارسل الحرف لتري الانميات المتاحه':
+                sear = bot.send_message(chat_id=message.chat.id, text="🔎")
                 anime_name2 = message.text.lower()
                 anime_name2 = message.text.lower()[0]  # الحرف الأول من رسالة المستخدم
                 filtered_animes = [anime for anime in data if anime["Title"].lower().startswith(anime_name2)]
-
                 if filtered_animes:
                     responseee = f"قائمة ببعض الأنميات التي تبدأ بحرف {anime_name2}:"
                     for anime in filtered_animes:
                         responseee += f"\n- `{anime['Title']}`"
-
                     # تقسيم النص إلى أسطر
                     response_lines = responseee.split('\n')
-
                     # تجميع الأسطر في رسائل مجمعة
                     messages = []
                     temp_message = ""
@@ -730,25 +720,24 @@ def handle_all_messages(message):
                         if len(temp_message.split('\n')) >= 20:
                             messages.append(temp_message)
                             temp_message = ""
-
                     # إرسال رسائل مجمعة
                     for message_text in messages:
+                        bot.delete_message(message.chat.id, sear.message_id)
                         bot.send_message(chat_id=message.chat.id, text=message_text, parse_mode="markdown")
                 else:
                     responseee = f"عذرًا، لم يتم العثور على أي أنمي يبدأ بحرف {anime_name2}."
+                    bot.delete_message(message.chat.id,  sear.message_id)
                     bot.send_message(chat_id=message.chat.id, text=responseee, parse_mode="markdown")
 
             elif message.text:
+                sear = bot.send_message(chat_id=message.chat.id, text="🔎")
                 anime_name = message.text.lower()
-                closest_animes = process.extractBests(anime_name, [title.lower() for anime in data for title in anime['names']], score_cutoff=90, limit=30)
-
+                closest_animes = process.extractBests(anime_name, [title.lower() for anime in data for title in anime['names']], score_cutoff=80, limit=30)
                 if closest_animes:
                     response = f"نتائج البحث عن ❲ {anime_name} ❳"
                     keyboard = InlineKeyboardMarkup()
                     added_titles = set()  # مجموعة لتتبع العناوين المضافة
-
                     sorted_animes = sorted(data, key=lambda x: x['Title'].lower())  # ترتيب الأفلام بالترتيب الأبجدي
-
                     for anime in sorted_animes:
                         for title in anime['names']:
                             if title.lower() in [match.lower() for match, score in closest_animes]:
@@ -757,11 +746,11 @@ def handle_all_messages(message):
                                     button = InlineKeyboardButton(anime['Title'], callback_data=f"¥{tit}")
                                     keyboard.add(button)
                                     added_titles.add(tit)  # إضافة العنوان إلى المجموعة المضافة
-                    
+                    bot.delete_message(message.chat.id,  sear.message_id)
                     bot.send_message(chat_id=message.chat.id, text=response, reply_markup=keyboard)
                 else:
+                    bot.delete_message(message.chat.id,  sear.message_id)
                     bot.send_message(chat_id=message.chat.id, text="عذرًا، لم يتم العثور على نتائج مطابقة.")
-        
     if message.text == "المطور" or message.text == "مطور" or message.text == "المبرمج":
             p3 = types.InlineKeyboardMarkup()
             e4 = types.InlineKeyboardButton(text="المطور .", url="tg://user?id=1448333343")
@@ -832,7 +821,6 @@ def callback_query(call):
         bot.delete_message(call.message.chat.id, call.message.message_id)
     if call.data == "a13":
         a13(call.message)
-
 
     if call.data.startswith("HERE"):
         user_id = int(call.data.split(":")[1])
