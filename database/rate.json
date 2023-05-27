@@ -1,200 +1,109 @@
-[
-    {
-        "onestar": {
-            "Arcane": [
-                "1297503311",
-                "1448333343"
-            ],
-            "Arte": [],
-            "Bleach": [],
-            "Bakuman.": [
-                "1448333343"
-            ],
-            "Black Clover": [
-                "1448333343"
-            ],
-            "Hunter x Hunter (2011)": [
-                "1448333343"
-            ],
-            "Enen no Shouboutai: Ni no Shou": [
-                "1448333343"
-            ],
-            "Aiyou de Mishi": [
-                "1448333343"
-            ],
-            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen": [
-                "1448333343"
-            ],
-            "Chainsaw Man": [
-                "1448333343"
-            ]
-        }
+{
+    "1448333343": {
+        "favorite": [
+            "Aiyou de Mishi",
+            "Black Clover",
+            "Hunter x Hunter (2011)",
+            "Bleach Movie 1: Memories of Nobody",
+            "Bleach: Sennen Kessen-hen",
+            "Houkago Saikoro Club",
+            "3-gatsu no Lion 2nd Season",
+            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen",
+            "Enen no Shouboutai: Ni no Shou",
+            "Bleach",
+            "Naruto: Shippuuden",
+            "Shingeki no Kyojin",
+            "Shingeki no Kyojin: The Final Season - Kanketsu-hen",
+            "Blue Lock",
+            "Naruto",
+            "One Piece",
+            "Vinland Saga Season 2"
+        ],
+        "upcoming": [
+            "Bleach",
+            "Black Clover",
+            "Hunter x Hunter (2011)",
+            "Bleach Movie 1: Memories of Nobody",
+            "Bleach: Sennen Kessen-hen",
+            "Houkago Saikoro Club",
+            "3-gatsu no Lion 2nd Season",
+            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen",
+            "Enen no Shouboutai: Ni no Shou",
+            "Naruto: Shippuuden",
+            "Blue Lock",
+            "One Piece",
+            "Naruto",
+            "Vinland Saga Season 2"
+        ],
+        "watching": [
+            "Black Clover",
+            "Hunter x Hunter (2011)",
+            "Bleach Movie 1: Memories of Nobody",
+            "Houkago Saikoro Club",
+            "3-gatsu no Lion 2nd Season",
+            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen",
+            "Enen no Shouboutai: Ni no Shou",
+            "Gunjou no Fanfare",
+            "Bleach",
+            "Aiyou de Mishi",
+            "Blue Lock",
+            "Naruto: Shippuuden",
+            "One Piece",
+            "Naruto",
+            "Vinland Saga Season 2"
+        ],
+        "watched": [
+            "Aiyou de Mishi",
+            "Hunter x Hunter (2011)",
+            "Bleach Movie 1: Memories of Nobody",
+            "Bleach: Sennen Kessen-hen",
+            "Houkago Saikoro Club",
+            "3-gatsu no Lion 2nd Season",
+            "Enen no Shouboutai: Ni no Shou",
+            "Naruto: Shippuuden",
+            "Shingeki no Kyojin",
+            "Shingeki no Kyojin: The Final Season - Kanketsu-hen",
+            "Chainsaw Man",
+            "Boruto: Naruto Next Generations",
+            "Blue Lock",
+            "One Piece",
+            "Naruto"
+        ]
     },
-    {
-        "twostar": {
-            "Bleach": [],
-            "Bakuman.": [
-                "1448333343"
-            ],
-            "Arte": [],
-            "Black Clover": [
-                "1448333343"
-            ],
-            "Hunter x Hunter (2011)": [
-                "1448333343"
-            ],
-            "Houkago Saikoro Club": [
-                "1448333343"
-            ],
-            "Enen no Shouboutai: Ni no Shou": [
-                "1448333343"
-            ],
-            "Aiyou de Mishi": [
-                "1448333343"
-            ],
-            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen": [
-                "1448333343"
-            ],
-            "Naruto: Shippuuden": []
-        }
+    "1297503311": {
+        "watched": [
+            "Aiyou de Mishi",
+            "Bleach"
+        ],
+        "watching": [
+            "Aiyou de Mishi",
+            "Arcane",
+            "Arte",
+            "Bleach"
+        ],
+        "upcoming": [
+            "Aiyou de Mishi",
+            "Arte",
+            "Bleach"
+        ],
+        "favorite": [
+            "Aiyou de Mishi",
+            "Bleach"
+        ]
     },
-    {
-        "fourstar": {
-            "Bleach": [],
-            "Bakuman.": [
-                "1448333343"
-            ],
-            "Arte": [],
-            "Black Clover": [
-                "1448333343"
-            ],
-            "Hunter x Hunter (2011)": [
-                "1448333343"
-            ],
-            "Bleach Movie 1: Memories of Nobody": [
-                "1448333343"
-            ],
-            "Houkago Saikoro Club": [
-                "1448333343"
-            ],
-            "Enen no Shouboutai: Ni no Shou": [
-                "1448333343"
-            ],
-            "Aiyou de Mishi": [
-                "1448333343"
-            ],
-            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen": [
-                "1448333343"
-            ]
-        }
+    "1480632741": {
+        "watching": [
+            "Bleach"
+        ]
     },
-    {
-        "threestar": {
-            "Bleach": [],
-            "Bakuman.": [
-                "1448333343"
-            ],
-            "Arte": [],
-            "Black Clover": [
-                "1448333343"
-            ],
-            "Hunter x Hunter (2011)": [
-                "1448333343"
-            ],
-            "Houkago Saikoro Club": [
-                "1448333343"
-            ],
-            "Enen no Shouboutai: Ni no Shou": [
-                "1448333343"
-            ],
-            "Aiyou de Mishi": [
-                "1448333343"
-            ],
-            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen": [
-                "1448333343"
-            ]
-        }
+    "1080153418": {
+        "watching": [
+            "Death Note"
+        ]
     },
-    {
-        "fivestar": {
-            "Bleach": [],
-            "Bakuman.": [
-                "1448333343"
-            ],
-            "Arte": [
-                "1448333343"
-            ],
-            "Black Clover": [
-                "1448333343"
-            ],
-            "Hunter x Hunter (2011)": [
-                "1448333343"
-            ],
-            "Bleach Movie 1: Memories of Nobody": [
-                "1448333343"
-            ],
-            "Bleach: Sennen Kessen-hen": [
-                "1448333343"
-            ],
-            "Houkago Saikoro Club": [
-                "1448333343"
-            ],
-            "7 Seeds": [
-                "1448333343"
-            ],
-            "Bleach Movie 3: Fade to Black - Kimi no Na wo Yobu": [
-                "1448333343"
-            ],
-            "3-gatsu no Lion 2nd Season": [
-                "1448333343"
-            ],
-            "Kaguya-sama wa Kokurasetai?: Tensai-tachi no Renai Zunousen": [
-                "1448333343"
-            ],
-            "Enen no Shouboutai: Ni no Shou": [
-                "1448333343"
-            ],
-            "Aiyou de Mishi": [
-                "1448333343"
-            ],
-            "One Piece Film: Red": [
-                "1448333343"
-            ],
-            "One Piece": [
-                "1448333343"
-            ],
-            "Naruto: Shippuuden": [
-                "1448333343"
-            ],
-            "Shingeki no Kyojin Season 3": [
-                "1448333343"
-            ],
-            "Naruto": [
-                "1480632741",
-                "1448333343"
-            ],
-            "Shingeki no Kyojin": [
-                "1448333343"
-            ],
-            "Shingeki no Kyojin: The Final Season - Kanketsu-hen": [
-                "1448333343"
-            ],
-            "Blue Lock": [
-                "1448333343"
-            ],
-            "Detective Conan": [
-                "1448333343"
-            ],
-            "Akudama Drive": [
-                "1448333343"
-            ],
-            "Yamada-kun to Lv999 no Koi wo Suru": [
-                "1952185463",
-                "1448333343"
-            ],
-            "Vinland Saga Season 2": [
-                "1448333343"
-            ]
-        }
+    "1952185463": {
+        "watching": [
+            "Yamada-kun to Lv999 no Koi wo Suru"
+        ]
     }
-]
+}
