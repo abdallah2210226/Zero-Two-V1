@@ -678,8 +678,7 @@ def handle_admin(message):
 @bot.message_handler(func=lambda message: True)
 def handle_all_messages(message):
     global id
-    with open("database/witanime.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
+    
     if message.chat.type == "private":
         id = message.from_user.id
         user_id = message.from_user.id
@@ -700,9 +699,12 @@ def handle_all_messages(message):
             markup.add(*buttons)
             bot.reply_to(message, "أنت لم تشترك في القنوات المطلوبة. الرجاء الاشتراك في جميع القنوات المطلوبة لاستخدام هذا البوت.", reply_markup=markup)
         else:
+            
             save_user_subscription(user_id)
             if message.reply_to_message and message.reply_to_message.text == 'ارسل الحرف لتري الانميات المتاحه':
                 sear = bot.send_message(chat_id=message.chat.id, text="🔎")
+                with open("database/witanime.json", "r", encoding="utf-8") as f:
+                    data = json.load(f)
                 anime_name2 = message.text.lower()
                 anime_name2 = message.text.lower()[0]  # الحرف الأول من رسالة المستخدم
                 filtered_animes = [anime for anime in data if anime["Title"].lower().startswith(anime_name2)]
@@ -731,6 +733,8 @@ def handle_all_messages(message):
 
             elif message.text:
                 sear = bot.send_message(chat_id=message.chat.id, text="🔎")
+                with open("database/witanime.json", "r", encoding="utf-8") as f:
+                    data = json.load(f)
                 anime_name = message.text.lower()
                 closest_animes = process.extractBests(anime_name, [title.lower() for anime in data for title in anime['names']], score_cutoff=80, limit=30)
                 if closest_animes:
@@ -853,12 +857,35 @@ def callback_query(call):
             save_user_subscription(user_id)
             bot.answer_callback_query(call.id, "تم!")
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
-            search_button = telebot.types.InlineKeyboardButton('بحث عن الأنمي', callback_data='search')
-            profile_button = telebot.types.InlineKeyboardButton('الملف الشخصي', callback_data='profile')
-            markup.add(search_button, profile_button)
-            bot.send_message(call.message.chat.id, "مرحبًا بك في بوت مشاهدة الأنمي!", reply_markup=markup)
-
+            UP, CPU, RAM, DISK = bot_sys_stats()
+            user_id = call.from_user.id
+            idd = call.from_user.id
+            id = call.from_user.id
+            f2 = call.from_user.first_name
+            t2 = call.from_user.username
+            id_o = call.chat.id
+            mention = f"[{f2}](tg://user?id={idd})"
+            divfirst_name = bot.get_chat(1448333343).first_name
+            botname = bot.get_me().first_name
+            botusername = bot.get_me().username
+            startkey = types.InlineKeyboardMarkup()
+            dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id=1448333343')
+            ch = types.InlineKeyboardButton("• 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 •",url='https://t.me/Anime1Forest')
+            gr = types.InlineKeyboardButton("• 𝐎𝐔𝐑 𝐂𝐇𝐀𝐓 •",url='https://t.me/AnimeForestgroup')
+            sug = types.InlineKeyboardButton("• التواصل مع المطور•",callback_data='SUG')
+            search_button = types.InlineKeyboardButton('• بحث عن الأنمي •', callback_data='search')
+            profile_button = types.InlineKeyboardButton('• 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 •', callback_data='profile')
+            startkey.add(search_button, profile_button)
+            startkey.add(dev,ch)
+            startkey.add(gr,sug)
+            bot.send_photo(call.message.chat.idstart_photo,caption=f"""
+⿻ أوهايو {mention} 👋🏻🎌.
+⿻ أهلا بك في بوت ↤ ❲ [{botname}](https://t.me/{botusername}) ❳  .
+⿻ أرسل اسم الانمي لعرض النتائج .
+⿻ اضغط علي زر ( بحث عن الانمي ) وأرسل حرف الانمي لعرض النتائج .
+⿻ مطور البوت  ↤ ❲ [{divfirst_name}](https://t.me/YUUI4I) ❳  .
+⿻ البوت قيد التشغيل من ❲ {UP} ❳ .
+""",parse_mode="markdown", reply_markup=startkey)
         else:
             bot.answer_callback_query(call.id, "أنت لم تشترك في جميع القنوات المطلوبة بعد.", show_alert=True)
 
