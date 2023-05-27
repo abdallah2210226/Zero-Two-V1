@@ -2,9 +2,10 @@ import json
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen, Request
 import time
+
 while True:
-# قراءة الملف الحالي
-    with open("witanime.json", "r", encoding="utf-8") as file:
+    # قراءة الملف الحالي
+    with open("database/witanime.json", "r", encoding="utf-8") as file:
         current_data = json.load(file)
 
     links = "https://witanime.com/anime-status/%d9%8a%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d8%a7%d9%86/"
@@ -41,7 +42,7 @@ while True:
         soup2 = bs(html2, "html.parser")
         anime_info_container = soup2.find("div", {"class": "anime-info-container"})
         anime_story_element = anime_info_container.find("p", {"class": "anime-story"}).text.strip()
-        
+
         # التحقق من وجود الأنمي في الملف الحالي
         anime_exists = any(
             anime["Title"] == anime_story_element for anime in current_data
@@ -58,9 +59,10 @@ while True:
 
         anime_ep_list = soup2.find_all("div", {"class": "col-lg-3 col-md-3 col-sm-12 col-xs-12 col-no-padding col-mobile-no-padding DivEpisodeContainer"})
 
-        anime_ep = []
+        anime_ep_new = []  # قائمة لتخزين الحلقات الجديدة
 
         for t in anime_ep_list:
+            # استخراج معلومات الحلقة
             anime_ep_url = t.find("div", {"class": "episodes-card-title"}).find("a")["href"]
             anime_ep_name = t.find("div", {"class": "episodes-card-title"}).text.strip()
 
@@ -72,52 +74,49 @@ while True:
                 if anime["image"] == anime_image
             )
 
-            if episode_exists:
-                print(f"تم تجاهل هذه الحلقة لأنها موجودة بالفعل في الملف الحالي للأنمي: {animetitle}")
-                continue
+            if not episode_exists:
+                servers_data = []  # قائمة لتخزين بيانات السيرفرات
 
-            servers_data = []
-            request3 = Request(anime_ep_url, headers=headers)
-            response3 = urlopen(request3)
-            html3 = response3.read()
-            response3.close()
-            soup3 = bs(html3, "html.parser")
-            anime_servers_list = soup3.find_all("div", {"class": "col-md-6"})
-            for server_element in anime_servers_list:
-                quality_element = server_element.find("ul", {"class": "quality-list"})
-                if quality_element is not None:
-                    quality_name = quality_element.find("li").text.strip()
-                    server_links = quality_element.find_all("a")
-                    server_urls = [link["href"] for link in server_links]
-                    quality_items = quality_element.find_all("li")
-                    texts = [item.text.strip() for item in quality_items[1:]]
+                # استخراج بيانات السيرفرات
+                request3 = Request(anime_ep_url, headers=headers)
+                response3 = urlopen(request3)
+                html3 = response3.read()
+                response3.close()
+                soup3 = bs(html3, "html.parser")
+                anime_servers_list = soup3.find_all("div", {"class": "col-md-6"})
+                for server_element in anime_servers_list:
+                    quality_element = server_element.find("ul", {"class": "quality-list"})
+                    if quality_element is not None:
+                        quality_name = quality_element.find("li").text.strip()
+                        server_links = quality_element.find_all("a")
+                        server_urls = [link["href"] for link in server_links]
+                        quality_items = quality_element.find_all("li")
+                        texts = [item.text.strip() for item in quality_items[1:]]
 
-                    server_data = []
-                    for i in range(len(server_urls)):
-                        server_data.append({
-                            "server": texts[i],
-                            "url": server_urls[i]
+                        server_data = []
+                        for i in range(len(server_urls)):
+                            server_data.append({
+                                "server": texts[i],
+                                "url": server_urls[i]
+                            })
+
+                        servers_data.append({
+                            "quality": quality_name,
+                            "servers": server_data
                         })
 
-                    servers_data.append({
-                        "quality": quality_name,
-                        "servers": server_data
-                    })
+                anime_ep_new.append({
+                    "name": anime_ep_name,
+                    "servers": servers_data
+                })
 
-            anime_ep.append({
-                "name": anime_ep_name,
-                "servers": servers_data
-            })
-
-        # التحقق من وجود الأنمي في الملف الحالي وإضافة الحلقات إليه
         anime_found = False
         for anime in current_data:
             if anime["image"] == anime_image:
-                anime["ep"].extend(anime_ep)
+                anime["ep"].extend(anime_ep_new)
                 anime_found = True
                 break
 
-        # إضافة الأنمي كقسم جديد في حالة عدم وجوده في الملف الحالي
         if not anime_found:
             new_anime = {
                 "names": [animetitle],
@@ -125,16 +124,15 @@ while True:
                 "image": anime_image,
                 "Genres": anime_genres,
                 "info": anime_info,
-                "ep": anime_ep
+                "ep": anime_ep_new
             }
             current_data.append(new_anime)
 
-    data.append(current_data)
     time.sleep(2)
 
     # حفظ الملف النهائي
-    with open("witanime.json", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+    with open("database/witanime.json", "w", encoding="utf-8") as file:
+        json.dump(current_data, file, ensure_ascii=False, indent=4)
 
     print("تم حفظ المعلومات بنجاح في ملف JSON.")
     print("تشغيل الكود!")

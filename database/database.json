@@ -16,8 +16,7 @@
             "Shingeki no Kyojin: The Final Season - Kanketsu-hen",
             "Blue Lock",
             "Naruto",
-            "One Piece",
-            "Vinland Saga Season 2"
+            "One Piece"
         ],
         "upcoming": [
             "Bleach",
@@ -32,8 +31,7 @@
             "Naruto: Shippuuden",
             "Blue Lock",
             "One Piece",
-            "Naruto",
-            "Vinland Saga Season 2"
+            "Naruto"
         ],
         "watching": [
             "Black Clover",
@@ -48,9 +46,7 @@
             "Aiyou de Mishi",
             "Blue Lock",
             "Naruto: Shippuuden",
-            "One Piece",
-            "Naruto",
-            "Vinland Saga Season 2"
+            "One Piece"
         ],
         "watched": [
             "Aiyou de Mishi",
@@ -66,8 +62,7 @@
             "Chainsaw Man",
             "Boruto: Naruto Next Generations",
             "Blue Lock",
-            "One Piece",
-            "Naruto"
+            "One Piece"
         ]
     },
     "1297503311": {
@@ -94,16 +89,6 @@
     "1480632741": {
         "watching": [
             "Bleach"
-        ]
-    },
-    "1080153418": {
-        "watching": [
-            "Death Note"
-        ]
-    },
-    "1952185463": {
-        "watching": [
-            "Yamada-kun to Lv999 no Koi wo Suru"
         ]
     }
 }
