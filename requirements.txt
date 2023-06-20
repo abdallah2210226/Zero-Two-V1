@@ -12,3 +12,4 @@ Pillow
 python-bidi
 arabic-reshaper
 fuzzywuzzy
+python-Levenshtein
