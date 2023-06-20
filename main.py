@@ -2029,22 +2029,16 @@ def broadcast_message_pin(message):
                 data = json.load(file)
                 allowed_ids = data['users']
         if message.photo:
-            # إرسال الصورة
             for user_id in allowed_ids:
                 sent_message = bot.send_photo(user_id, message.photo[-1].file_id, caption=message.caption)
-                # تثبيت الرسالة في المجموعة أو القناة
                 bot.pin_chat_message(sent_message.chat.id, sent_message.message_id)
         elif message.video:
-            # إرسال الفيديو
             for user_id in allowed_ids:
                 sent_message = bot.send_video(user_id, message.video.file_id, caption=message.caption)
-                # تثبيت الرسالة في المجموعة أو القناة
                 bot.pin_chat_message(sent_message.chat.id, sent_message.message_id)
         else:
             for user_id in allowed_ids:
-                # إرسال الرسالة للمشتركين
                 sent_message = bot.send_message(user_id, message.text)
-                # تثبيت الرسالة في المجموعة أو القناة
                 bot.pin_chat_message(sent_message.chat.id, sent_message.message_id)
 
 def broadcast_message(message):
@@ -2054,9 +2048,15 @@ def broadcast_message(message):
         with open('database/subscribed_users.json', 'r') as file:
             data = json.load(file)
             allowed_ids = data['users']
-
-        for user_id in allowed_ids:
-            bot.send_message(user_id, message.text)
+        if message.photo:
+            for user_id in allowed_ids:
+                sent_message = bot.send_photo(user_id, message.photo[-1].file_id, caption=message.caption)
+        elif message.video:
+            for user_id in allowed_ids:
+                sent_message = bot.send_video(user_id, message.video.file_id, caption=message.caption)
+        else:
+            for user_id in allowed_ids:
+                sent_message = bot.send_message(user_id, message.text)
 def forward_message(message):
     if message.text == "cancel":
         bot.reply_to(message, f"تم الالغاء")
