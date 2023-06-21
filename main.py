@@ -1576,17 +1576,16 @@ def game_1(message):
     bot.register_next_step_handler(ask, check_answer2, re,t3)
 def game_2(message):
     celeb = choice(data)
-    name = celeb['name']
+    nameeeee = celeb['name']
     image = celeb['image']
     print(image)
-    print(name)
+    print(nameeeee)
     x = bot.send_photo(
         message.chat.id,
         image,caption= "ايش اسم شخصية الانمي ؟",reply_to_message_id=message.message_id
     )
     t3 = time.time()
-    re = f"{name}"
-    bot.register_next_step_handler(x, check_answer, re,t3)
+    bot.register_next_step_handler(x, check_answer,t3 ,nameeeee)
 def game_3(message):
     A = choice(anime_emoji)
     emo = A['title']
@@ -1624,51 +1623,53 @@ def game_4(message):
     )
     t3 = time.time()
     re = f"{ans}"
-    bot.register_next_step_handler(ask, check_answer3, re,t3)
+    bot.register_next_step_handler(ask, check_answer3, ans,t3)
 
 ###############
-def check_answer(message, answer_regex, t3):
+def check_answer(message, t3,nameeeee):
+        user_answer = unicodedata.normalize('NFKD', message.text).strip().lower().split()
+        for yyyy in user_answer:
+            user_answer2 = yyyy
+        best_match = None
+        best_ratio = 0
+        print(nameeeee)
+        for celebbb in nameeeee:
+            lasttt = celebbb.split()
+            for xxxx in lasttt:
+                print(lasttt)
+                normalized_name = unicodedata.normalize('NFKD', xxxx).lower()
+                ratio = fuzz.ratio(user_answer2, normalized_name)
+                if ratio > best_ratio:
+                    best_ratio = ratio
+                    best_match = lasttt
+                    print(ratio)
+        if best_match and best_ratio > 80:
+            t5 = time.time()
+            timee = round((t5 - t3), 2)
+            bot.reply_to(message, f"صح عليك {message.from_user.first_name}✔️\n⏰الوقت: {timee} ثانية\n༄")
+        elif message.text == 'الاسرع' :
+            game_1(message)
+        elif message.text == 'انمي':
+            bot.reply_to(message, f"الاجابة السابقة: {xxxx} ")
+            game_2(message)
+        elif message.text == 'ايموجي' :
+            game_3(message)
+        elif message.text == 'اعلام' :
+            game_4(message)
+        else:
+            bot.register_next_step_handler(message, check_answer,t3 ,nameeeee)
+
+def check_answer3(message, ans, t3):
         user_answer = unicodedata.normalize('NFKD', message.text).strip().lower()
         best_match = None
         best_ratio = 0
-        try:
-            for celeb in data:
-                for name in celeb['name']:
-                    normalized_name = unicodedata.normalize('NFKD', name).lower()
-                    ratio = fuzz.ratio(user_answer, normalized_name)
-                    if ratio > best_ratio:
-                        best_ratio = ratio
-                        best_match = name
-                        print(ratio)
-            if best_match and best_ratio > 80:
-                t5 = time.time()
-                timee = round((t5 - t3), 2)
-                bot.reply_to(message, f"صح عليك {message.from_user.first_name}✔️\n⏰الوقت: {timee} ثانية\n༄")
-            elif message.text == 'الاسرع' :
-                game_1(message)
-            elif message.text == 'انمي':
-                last_ans = answer_regex.split("'")[3]
-                bot.reply_to(message, f"الاجابة السابقة: {last_ans} ")
-                game_2(message)
-            elif message.text == 'ايموجي' :
-                game_3(message)
-            elif message.text == 'اعلام' :
-                game_4(message)
-            else:
-                bot.register_next_step_handler(message, check_answer, answer_regex,t3)
-        except:pass
-def check_answer3(message, answer_regex, t3):
-        user_answer = unicodedata.normalize('NFKD', message.text).strip().lower()
-        best_match = None
-        best_ratio = 0
-        for country in FLAGS:
-            name = country['country']
-            normalized_name = unicodedata.normalize('NFKD', name).lower()
-            ratio = fuzz.ratio(user_answer, normalized_name)
-            if ratio > best_ratio:
-                best_ratio = ratio
-                best_match = name
-                print(ratio)
+
+        normalized_name = unicodedata.normalize('NFKD', ans).lower()
+        ratio = fuzz.ratio(user_answer, normalized_name)
+        if ratio > best_ratio:
+            best_ratio = ratio
+            best_match = ans
+            print(ratio)
         if best_match and best_ratio > 80:
             t5 = time.time()
             timee = round((t5 - t3), 2)
@@ -1680,10 +1681,10 @@ def check_answer3(message, answer_regex, t3):
         elif message.text == 'ايموجي' :
             game_3(message)
         elif message.text == 'اعلام' :
-            bot.reply_to(message, f"الاجابة السابقة: {answer_regex} ")
+            bot.reply_to(message, f"الاجابة السابقة: {ans} ")
             game_4(message)
         else:
-            bot.register_next_step_handler(message, check_answer, answer_regex,t3)
+            bot.register_next_step_handler(message, check_answer3, ans,t3)
 def check_answer2(message, answer_regex, t3):
     if message.text and answer_regex and message.text.strip().lower() == answer_regex.strip().lower():
         t5 = time.time()
