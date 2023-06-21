@@ -28,7 +28,7 @@ ping_photo = "https://telegra.ph//file/8fe4f9f6c2b0135b67085.jpg"
 start_photo = "https://telegra.ph//file/61904cf0cb3b74844679d.jpg"
 help_photo = "https://telegra.ph//file/7588af20e99f430ab4c7e.jpg"
 
-TOKEN = "5081332593:AAGj3diiNyQQOCoZOmT8XIn4PHZzhr5Iagg"
+TOKEN = "5081332593:AAEurZD2tYXu97fw7Y0q8asA2jDgipbINoQ"
 bot = telebot.TeleBot(TOKEN)
 current_page = {}
 episodes = []
@@ -216,7 +216,7 @@ def ping(m):
     bot.send_photo(m.chat.id, ping_photo,caption=f"""
 ⿻ بوت ❲ [{botname}](https://t.me/{botusername}) ❳  يتم الان تشغيلة علي بينج ↤ ❲ {delta_ping * 1000:.3f} ms ❳  .
 ⿻ البوت قيد التشغيل من ❲ {UP} ❳ .
-⿻ يتم استخدام ❲ {DISK} ❳ من مساحة السيرفر . 
+⿻ يتم استخدام ❲ {DISK} ❳ من مساحة السيرفر .
 ⿻ يتم استهلاك ❲ {CPU} ❳ من المعالج , ويتم استهلاك ❲ {RAM} ❳ من الرام .
 """,parse_mode="markdown",reply_to_message_id=m.message_id)
     bot.delete_message(m.chat.id, reply.message_id)
@@ -226,7 +226,7 @@ def ping(m):
 def handle_start(message):
     UP, CPU, RAM, DISK = bot_sys_stats()
     user_id = message.from_user.id
-    
+
     idd = message.from_user.id
     id = message.from_user.id
     f2 = message.from_user.first_name
@@ -272,7 +272,7 @@ def handle_start(message):
 ⿻ أهلا بك في بوت ↤ ❲ [{botname}](https://t.me/{botusername}) ❳  .
 ⿻ أرسل اسم الانمي لعرض النتائج .
 ⿻ اضغط علي زر ( بحث عن الانمي ) وأرسل حرف الانمي لعرض النتائج .
-⿻ يمكنك استخدام امر /ai + (الوصف) لتوليد صور بالذكاء الاصطناعي . 
+⿻ يمكنك استخدام امر /ai + (الوصف) لتوليد صور بالذكاء الاصطناعي .
 ⿻ مطور البوت  ↤ ❲ [{divfirst_name}](https://t.me/YUUI4I) ❳  .
 ⿻ البوت قيد التشغيل من ❲ {UP} ❳ .
 """,parse_mode="markdown", reply_markup=startkey)
@@ -314,7 +314,7 @@ def Get(message):
         avtar = types.InlineKeyboardMarkup(row_width=3)
         chng = types.InlineKeyboardButton("تغيير🔄", callback_data=f"HERE:{message.from_user.id}")
         avtar.add(chng)
-        try:    
+        try:
             bot.send_photo(message.chat.id, avanime, reply_markup=avtar,reply_to_message_id=message.message_id)
             if message.from_user.id != 1448333343:
                     bot.forward_message(developer_id, message.chat.id, message.message_id)
@@ -424,7 +424,7 @@ def id(message):
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 @bot.channel_post_handler(func=lambda message: True)
 def repeat_all_messages(message):
-    
+
     if message.chat.id == -1001827472195 :
         with open('database/subscribed_users.json', 'r') as file:
             data = json.load(file)
@@ -456,7 +456,7 @@ def handle_all_messages(message):
             markup.add(*buttons)
             bot.reply_to(message, "أنت لم تشترك في القنوات المطلوبة. الرجاء الاشتراك في جميع القنوات المطلوبة لاستخدام هذا البوت.", reply_markup=markup)
         else:
-            
+
             save_user_subscription(user_id)
             if message.reply_to_message and message.reply_to_message.text == 'ارسل الحرف لتري الانميات المتاحه':
                 sear = bot.send_message(chat_id=message.chat.id, text="🔎")
@@ -530,7 +530,7 @@ def handle_all_messages(message):
             bot.send_photo(message.chat.id,photo="https://telegra.ph//file/9171b9ddd4ff3ce53ff62.jpg",caption={h},
                            parse_mode="markdown",
                            reply_markup=p3,
-                           reply_to_message_id=message.message_id)    
+                           reply_to_message_id=message.message_id)
 
     if message.chat.type == "supergroup" or message.chat.type == "group":
         if any(word in message.text for word in banned_words):
@@ -904,7 +904,7 @@ def callback_query(call):
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
-        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
+        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
         time.sleep(.1)
@@ -958,7 +958,7 @@ def callback_query(call):
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
-        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
+        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
         time.sleep(.1)
@@ -1012,7 +1012,7 @@ def callback_query(call):
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
-        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
+        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
         time.sleep(.1)
@@ -1066,7 +1066,7 @@ def callback_query(call):
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
-        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
+        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
         time.sleep(.1)
@@ -1120,7 +1120,7 @@ def callback_query(call):
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
-        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
+        keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
         time.sleep(.1)
@@ -1189,7 +1189,7 @@ def callback_query(call):
 
         else:
             bot.send_message(call.message.chat.id, "لا يوجد أنميات في القائمة .")
-    
+
     if "¥" in call.data:
         bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
         time.sleep(.1)
@@ -1210,13 +1210,13 @@ def callback_query(call):
 
             response = f"""
 ⿻ الاسم : ❲{title}❳
-⿻ القصة : 
-    ◎ ─━───━─ 𖡦─━───━─ ◎ 
+⿻ القصة :
+    ◎ ─━───━─ 𖡦─━───━─ ◎
     {description}
-    ◎ ─━───━─ 𖡦─━───━─ ◎ 
+    ◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ التصنيف : {genres}
 {info}"""
-            
+
             bot.send_photo(call.message.chat.id, image, caption=response, reply_markup=keyboard)
     if call.data == "next":
         bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
@@ -1244,7 +1244,7 @@ def callback_query(call):
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
-    
+
     elif call.data == "back_to_main":
         bot.answer_callback_query(call.id, f"أنتظر قليلا ...", show_alert=True)
         time.sleep(.1)
@@ -1313,7 +1313,7 @@ def callback_query(call):
                 allowed_ids = user['user_id']
                 bot.send_message(allowed_ids,"تم تصفير الصور في أمر الذكاء الاصطناعي")
             save_user_data()
-            bot.send_message(call.message.chat.id, text=f"images has been reset for {len(user_data)} users.")           
+            bot.send_message(call.message.chat.id, text=f"images has been reset for {len(user_data)} users.")
     if call.data == 'reset_all_war':
         if user_id == 1448333343:
             for user in user_data:
@@ -1427,7 +1427,7 @@ def callback_query(call):
             bot.answer_callback_query(call.id, f"- الامر ليس لك",
                                         show_alert=True)
             return
-            
+
     if user_id == developer_id or user_id in get_admins():
         if call.data == "broadcast_pin":
             # إجراء الإذاعة
@@ -1508,14 +1508,14 @@ def bot_func(message):
             except: pass
             y = bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithoutpfp.jpg', 'rb'),caption=f"""
 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 <a href="t.me/{CH_username}">{message.chat.title}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑵𝑨𝑴𝑬  ⌯ <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
 ⿻ 𝐔𝐒𝐄𝐑 ⌯ @{user}
 ⿻ 𝐈𝐃  ⌯ <code>{message.from_user.id}</code>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑻𝑶 𝑪𝑶𝑵𝑻𝑨𝑪𝑻 𝑻𝑯𝑬 𝑶𝑾𝑵𝑬𝑹 ⌯ <a href="tg://user?id=1448333343">{bot.get_chat(1448333343).first_name}</a>
 ⿻ 𝑪𝑯𝑨𝑵𝑵𝑬𝑳 ⌯ <a href="t.me/{CH_username}">{CH_name}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑻𝑯𝑬 𝑹𝑼𝑳𝑬𝑺  ⌯ /rules""", parse_mode="HTML")
             s = y.message_id
         if user_profile.total_count != 0:
@@ -1552,14 +1552,14 @@ def bot_func(message):
             except: pass
             bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithpfp.jpg', 'rb'),caption=f"""
 𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 <a href="t.me/{CH_username}">{message.chat.title}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑵𝑨𝑴𝑬  ⌯<a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
 ⿻ 𝐔𝐒𝐄𝐑 ⌯ @{user}
 ⿻ 𝐈𝐃  ⌯ <code>{message.from_user.id}</code>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑻𝑶 𝑪𝑶𝑵𝑻𝑨𝑪𝑻 𝑻𝑯𝑬 𝑶𝑾𝑵𝑬𝑹 ⌯ <a href="tg://user?id=1448333343">{bot.get_chat(1448333343).first_name}</a>
 ⿻ 𝑪𝑯𝑨𝑵𝑵𝑬𝑳 ⌯ <a href="t.me/{CH_username}">{CH_name}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
+◎ ─━───━─ 𖡦─━───━─ ◎
 ⿻ 𝑻𝑯𝑬 𝑹𝑼𝑳𝑬𝑺  ⌯ /rules""", parse_mode="HTML")
             s = y.message_id
 
@@ -1778,7 +1778,7 @@ def read_database():
 def create_keyboard(title,episodes, current_page,found_anime,user_id):
     buttons_per_page = 36  # عدد الأزرار في كل صفحة
     buttons_per_column = 3  # عدد الأزرار في كل عمود
-    
+
     start_index = (current_page[user_id] - 1) * buttons_per_page
     end_index = start_index + buttons_per_page
 
@@ -1848,14 +1848,14 @@ def create_keyboard(title,episodes, current_page,found_anime,user_id):
     if title in upcoming_anime :
         upcoming_button = telebot.types.InlineKeyboardButton(f'• اشاهدها لاحقا {inn} •', callback_data=f'${title}')
     else:
-        upcoming_button = telebot.types.InlineKeyboardButton(f'• اشاهدها لاحقا {noo} •', callback_data=f'${title}') 
+        upcoming_button = telebot.types.InlineKeyboardButton(f'• اشاهدها لاحقا {noo} •', callback_data=f'${title}')
 
     keyboard.add(watched_button,watching_button)
     keyboard.add(favorite_button,upcoming_button)
     keyboard.add(line)
     with open('database/rate.json', 'r') as file:
         database = json.load(file)
-        
+
     found_title = False
     onestarr_count = 0
     twostarr_count = 0
@@ -1924,7 +1924,7 @@ def is_user_subscribed(user_id, channel_id):
 def save_user_subscription(user_id):
     with open('database/subscribed_users.json', 'r+') as file:
         data = json.load(file)
-        
+
         if int(user_id) not in data['users']:
             data['users'].append(int(user_id))
             count = len(data['users'])
@@ -1999,7 +1999,7 @@ def view_channels(message):
                 channels_info.append(f"ID: <code>{channel_id}</code>\nUsername: @{channel_info.username}\nInvite Link: {invite_link}")
             else:
                 channels_info.append(f"ID: <code>{channel_id}</code>\nInvite Link: {invite_link}")
-        
+
         channels_text = "\n\n".join(channels_info)
         bot.reply_to(message, f"قنوات الاشتراك الإجباري:\n\n{channels_text}",parse_mode="HTML",disable_web_page_preview=True)
     else:
@@ -2218,7 +2218,7 @@ def add_warning_to_user(user_id):
         else:
             user['warnings'] = 1
         save_user_data()
-def CODE_API(message):  
+def CODE_API(message):
     CODE_API = message.text
     with open("x_prodia_key.txt", "w") as file:
         file.write(CODE_API)
