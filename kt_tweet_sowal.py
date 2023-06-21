@@ -722,8 +722,7 @@ data = [
     {
         "name": [
             "L",
-            "إل"
-        ],
+            "إل"],
         "image": "https://cdn.anime-planet.com/characters/primary/l-death-note-1.jpg?t=1625965725"
     },
     {
@@ -1386,15 +1385,15 @@ data = [
     },
     {
         "name": [
-            "Byakuya KUCHIKI",
-            "كوشيكي بياكويا"
+            "Byakuya",
+            "بياكويا"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/byakuya-kuchiki-1.jpg?t=1625965228"
     },
     {
         "name": [
             "Mitsukuni HANINOZUKA",
-            "ميتسوكوني هانينوزوكا"
+            "ميتسوكوني"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/mitsukuni-haninozuka-1.jpg?t=1625965197"
     },
@@ -1408,14 +1407,14 @@ data = [
     {
         "name": [
             "Ulquiorra SCHIFFER",
-            "الكيورا شيفار"
+            "الكيورا"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/ulquiorra-schiffer-1.jpg?t=1625965499"
     },
     {
         "name": [
-            "Tobio KAGEYAMA",
-            "توبيو كاجياما"
+            "Tobio",
+            "توبيو"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/tobio-kageyama-1.jpg?t=1625990149"
     },
@@ -1456,14 +1455,14 @@ data = [
     },
     {
         "name": [
-            "Yuri NAKAMURA",
+            "Yuri",
             "يوري"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/yuri-nakamura-1.webp?t=1653439076"
     },
     {
         "name": [
-            "Zenitsu AGATSUMA",
+            "Zenitsu",
             "زينيتسو"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/zenitsu-agatsuma-1.webp?t=1640891738"
@@ -2058,7 +2057,7 @@ data = [
     },
     {
         "name": [
-            "Giyuu TOMIOKA",
+            "TOMIOKA",
             "غيو توميوكا"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/giyuu-tomioka-1.jpg?t=1626009923"
@@ -3626,8 +3625,8 @@ data = [
     },
     {
         "name": [
-            "Choji AKIMICHI",
-            "شوجي أكيميتشي"
+            "Choji",
+            "شوجي"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/choji-akimichi-1.jpg?t=1625965431"
     },
@@ -5762,7 +5761,7 @@ data = [
     {
         "name": [
             "Sayaka MIKI",
-            "مادوكا"
+            "مادوكا ماجيكا"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/sayaka-miki-1.jpg?t=1625971673"
     },
@@ -5776,7 +5775,7 @@ data = [
     {
         "name": [
             "Marin KITAGAWA",
-            "مارين"
+            "مارين كيتاغاوا"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/marin-kitagawa-1.webp?t=1641698248"
     },
@@ -5790,14 +5789,14 @@ data = [
     {
         "name": [
             "Mary SAOTOME",
-            "ماري"
+            "ماري ساوتوم"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/mary-saotome-1.jpg?t=1626004018"
     },
     {
         "name": [
             "Tsukasa HIIRAGI",
-            "تسوكاسا"
+            "تسوكاسا هيراجي"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/tsukasa-hiiragi-1.jpg?t=1625965399"
     },
@@ -5818,14 +5817,14 @@ data = [
     {
         "name": [
             "Rory MERCURY",
-            "روري"
+            "روري ميركوري"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/rory-mercury-1.jpg?t=1625992856"
     },
     {
         "name": [
             "May CHANG",
-            "ماي"
+            "ماي تشانغ"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/may-chang-1.jpg?t=1625966009"
     },
@@ -5846,7 +5845,7 @@ data = [
     {
         "name": [
             "Karen ARARAGI",
-            "كارين"
+            "كارين اراراجي"
         ],
         "image": "https://cdn.anime-planet.com/characters/primary/karen-araragi-1.jpg?t=1625970594"
     },
