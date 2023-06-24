@@ -30,7 +30,7 @@ ping_photo = "https://telegra.ph//file/8fe4f9f6c2b0135b67085.jpg"
 start_photo = "https://telegra.ph//file/61904cf0cb3b74844679d.jpg"
 help_photo = "https://telegra.ph//file/7588af20e99f430ab4c7e.jpg"
 
-TOKEN = "5081332593:AAE3uucLd5CQn6Fqb9h0PmGtp5Vpj3aGY48"
+TOKEN = "5081332593:AAE9cfKuMCsqIpdS2In-msBltTvy_CmfCzg"
 bot = telebot.TeleBot(TOKEN)
 current_page = {}
 episodes = []
