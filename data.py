@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8
 
 import json
 from bs4 import BeautifulSoup as bs
@@ -9,7 +11,7 @@ while True:
     with open("database/witanime.json", "r", encoding="utf-8") as file:
         current_data = json.load(file)
 
-    links = "https://witanime.com/anime-status/%d9%8a%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d8%a7%d9%86/"
+    links = "https://witanime.com/anime-status/يعرض-الان/"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
     }
