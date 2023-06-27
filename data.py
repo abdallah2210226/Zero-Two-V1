@@ -5,20 +5,23 @@ import json
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen, Request
 import time
+from urllib.parse import quote
+
+
 
 while True:
     # قراءة الملف الحالي
     with open("database/witanime.json", "r", encoding="utf-8") as file:
         current_data = json.load(file)
 
-    links = "https://witanime.com/anime-status/يعرض-الان/"
+    links = "https://witanime.com/anime-status/" + quote("يعرض-الان/")
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
     }
 
     # استمرار التعديل على الملف
     request = Request(links, headers=headers)
-    response = urlopen(request)
+    response = urlopen(request, encoding='utf-8')
     html = response.read()
     response.close()
     time.sleep(1)
@@ -39,7 +42,7 @@ while True:
         animetitle = anime_title.text.strip()
         anime_link = anime_title.find("a")["href"]
         request2 = Request(anime_link, headers=headers)
-        response2 = urlopen(request2)
+        response2 = urlopen(request2, encoding='utf-8')
         html2 = response2.read()
         response2.close()
         soup2 = bs(html2, "html.parser")
@@ -82,7 +85,7 @@ while True:
 
                 # استخراج بيانات السيرفرات
                 request3 = Request(anime_ep_url, headers=headers)
-                response3 = urlopen(request3)
+                response3 = urlopen(request3, encoding='utf-8')
                 html3 = response3.read()
                 response3.close()
                 soup3 = bs(html3, "html.parser")
