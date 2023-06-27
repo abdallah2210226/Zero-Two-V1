@@ -7,8 +7,6 @@ from urllib.request import urlopen, Request
 import time
 from urllib.parse import quote
 
-
-
 while True:
     # قراءة الملف الحالي
     with open("database/witanime.json", "r", encoding="utf-8") as file:
