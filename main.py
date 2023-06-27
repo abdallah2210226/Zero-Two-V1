@@ -26,7 +26,7 @@ from random import choice, randint
 from module.var import *
 
 
-TOKEN = "5081332593:AAE9cfKuMCsqIpdS2In-msBltTvy_CmfCzg"
+TOKEN = "5081332593:AAFXMUVC55Sk2BloKoFzw6HivFTgyErmaHc"
 bot = telebot.TeleBot(TOKEN)
 bot.set_my_commands(commands=[
     telebot.types.BotCommand('start','إبدأ ⚡️')
