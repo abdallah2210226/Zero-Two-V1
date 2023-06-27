@@ -244,7 +244,7 @@ def handle_start(message):
         startkey.add(search_button, profile_button)
         startkey.add(dev,ch)
         startkey.add(gr,sug)
-        start_message2 = start_message.format(mention,botname,botusername,divfirst_name,divfirst_user)
+        start_message2 = start_message.format(mention,botname,botusername,divfirst_name,divfirst_user,UP)
         bot.send_photo(message.chat.id,start_photo,caption=start_message2,parse_mode="markdown", reply_markup=startkey)
     if message.from_user.id != 1448333343:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
