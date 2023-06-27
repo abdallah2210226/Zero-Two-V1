@@ -19,7 +19,7 @@ while True:
 
     # استمرار التعديل على الملف
     request = Request(links, headers=headers)
-    response = urlopen(request, encoding='utf-8')
+    response = urlopen(request)
     html = response.read()
     response.close()
     time.sleep(1)
@@ -40,7 +40,7 @@ while True:
         animetitle = anime_title.text.strip()
         anime_link = anime_title.find("a")["href"]
         request2 = Request(anime_link, headers=headers)
-        response2 = urlopen(request2, encoding='utf-8')
+        response2 = urlopen(request2)
         html2 = response2.read()
         response2.close()
         soup2 = bs(html2, "html.parser")
@@ -83,7 +83,7 @@ while True:
 
                 # استخراج بيانات السيرفرات
                 request3 = Request(anime_ep_url, headers=headers)
-                response3 = urlopen(request3, encoding='utf-8')
+                response3 = urlopen(request3)
                 html3 = response3.read()
                 response3.close()
                 soup3 = bs(html3, "html.parser")
