@@ -204,7 +204,7 @@ def pingg(m):
         bot.forward_message(developer_id, m.chat.id,m.message_id)
 @bot.message_handler(commands=['start'], chat_types =["private"])
 def handle_start(message):
-    UP = bot_sys_stats()
+    UP, CPU, RAM, DISK = bot_sys_stats()
     user_id = message.from_user.id
     idd = message.from_user.id
     id = message.from_user.id
@@ -1831,7 +1831,7 @@ welcome_message_id = None  # إنشاء متغير لتخزين معرف الر�
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message):
-    target_group_id = -1001581156849
+    target_group_id = -1001658651413
     if message.content_type == 'new_chat_members' and message.chat.id == target_group_id:
         bot.delete_message(message.chat.id, message.message_id)
         if message.content_type == 'new_chat_members':
