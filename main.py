@@ -1188,9 +1188,10 @@ def callback_query(call):
                     if item.get(other_rating):
                         if item[other_rating].get(watchedanime):
                             if str(user_id) in item[other_rating][watchedanime]:
-                                try:
-                                    item[s][watchedanime].remove(str(user_id))
-                                except:pass
+                                for s in other_ratings:
+                                    try:
+                                        item[s][watchedanime].remove(str(user_id))
+                                    except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
                                 
