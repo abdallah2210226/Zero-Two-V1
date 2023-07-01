@@ -53,7 +53,14 @@ url = "https://api.prodia.com/v1/job"
 user_data_file = 'user_data.json'
 with open(user_data_file, 'r') as file:
     user_data = json.load(file)
+sent_articles = []
 
+# قم بقراءة الملف JSON في بداية الكود إذا كان موجودًا
+try:
+    with open('sent_articles.json', 'r') as file:
+        sent_articles = json.load(file)
+except FileNotFoundError:
+    pass
 user_processing = {}  # قاموس لتتبع حالة الضغط لكل مستخدم
 
 START_TIME = datetime.utcnow()
@@ -285,45 +292,101 @@ def Get(message):
 
 @bot.message_handler(commands=['news'], chat_types=['private'])
 def News(message):
+    import re
+
+    headers = {
+        'authority': 'cr-news-api-service.prd.crunchyrollsvc.com',
+        'accept': '*/*',
+        'accept-language': 'en-US,en;q=0.9',
+        'origin': 'https://www.crunchyroll.com',
+        'referer': 'https://www.crunchyroll.com/',
+        'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Brave";v="114"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'cross-site',
+        'sec-gpc': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    }
+
+    params = {
+        'category': 'آخر أخبار الأنمي',
+        'page_size': '16',
+        'page': '1',
+    }
+
     try:
-        headers = {
-            'authority': 'cr-news-api-service.prd.crunchyrollsvc.com',
-            'accept': '*/*',
-            'accept-language': 'en-US,en;q=0.9',
-            'origin': 'https://www.crunchyroll.com',
-            'referer': 'https://www.crunchyroll.com/',
-            'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Brave";v="114"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'cross-site',
-            'sec-gpc': '1',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-        }
-
-        params = {
-            'category': 'آخر أخبار الأنمي',
-            'page_size': '16',
-            'page': '1',
-        }
-
         response = requests.get(
             'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/ar-SA/stories/search',
             params=params,
             headers=headers,
         )
-        data = response.json()  # تحويل الاستجابة إلى تنسيق JSON
-
+        data = response.json()
         for story in data['stories']:
-            headline = story['content']['headline']  # استخراج عنوان المقالة
-            thumbnail_url = story['content']['thumbnail']['filename']  # استخراج رابط الصورة المصغرة
-            bot.send_photo(message.chat.id, thumbnail_url,caption=headline)
+            article_id = story['content']['thumbnail']['id']
+            headline1 = story['content']['headline']
+            lead1 = story['content']['lead']
+            headline = re.sub(r'[-.?!]', r'\-', headline1)
+            lead = re.sub(r'[-.?!]', r'\-', lead1)
+            if "كرانشي رول" in lead :
+                lead2 = "-"
+                lead = re.sub(r'[-.?!]', r'\-', lead2)
+            date1 = story['content']['article_date']
+            date = re.sub(r'[-.?!]', r'\-', date1)
+            fasel1 = "-"
+            fasel = re.sub(r'[-.?!]', r'\-', fasel1)
+            caption = f"""__*{headline}*__\n\n{fasel} _{lead}_\n\n{date}"""
+            thumbnail_url = story['content']['thumbnail']['filename']
+            startkey = types.InlineKeyboardMarkup()
+            ch = types.InlineKeyboardButton("• 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 •",url='https://t.me/Anime1Forest')
+            gr = types.InlineKeyboardButton("• 𝐎𝐔𝐑 𝐂𝐇𝐀𝐓 •",url='https://t.me/AnimeForestgroup')
+            startkey.add(gr,ch)
+            bot.send_photo(message.chat.id, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=startkey)
     except Exception as e:
         bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
         bot.send_message(message.chat.id, "حدث خطأ")
+
+    if message.from_user.id == 1448333343:
+        try:
+            response = requests.get(
+                'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/ar-SA/stories/search',
+                params=params,
+                headers=headers,
+            )
+            data = response.json()
+            for story in data['stories']:
+                article_id = story['content']['thumbnail']['id']
+                if article_id in sent_articles:
+                    return
+                headline1 = story['content']['headline']
+                lead1 = story['content']['lead']
+                headline = re.sub(r'[-.?!]', r'\-', headline1)
+                lead = re.sub(r'[-.?!]', r'\-', lead1)
+                if "كرانشي رول" in lead :
+                    lead2 = "-"
+                    lead = re.sub(r'[-.?!]', r'\-', lead2)
+                date = story['content']['article_date']
+                fasel1 = "-"
+                fasel = re.sub(r'[-.?!]', r'\-', fasel1)
+                caption = f"""__*{headline}*__\n\n{fasel} _{lead}_"""
+                thumbnail_url = story['content']['thumbnail']['filename']
+                bot.send_photo(message.chat.id, thumbnail_url, caption=caption, parse_mode="MarkdownV2")
+                markup = types.InlineKeyboardMarkup(row_width=1)
+                button = types.InlineKeyboardButton(text="𝐙𝐄𝐑𝐎 𝐓𝐖𝐎 ༗.", url="https://t.me/AnimeForestbot")
+                markup.add(button)
+                bot.send_photo(-1001772490420, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=markup)
+
+                sent_articles.append(article_id)
+                with open('sent_articles.json', 'w') as file:
+                    json.dump(sent_articles, file)
+        except Exception as e:
+            bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
+            bot.send_message(message.chat.id, "حدث خطأ")
+
     if message.from_user.id != 1448333343:
         bot.forward_message(developer_id, message.chat.id, message.message_id)
+
 @bot.message_handler(commands=['anime','search'], chat_types =["private"])
 def handle_anime_command(message):
     user_id = message.from_user.id
@@ -469,7 +532,7 @@ def profile(message):
 
 @bot.channel_post_handler(func=lambda message: True)
 def repeat_all_messages(message): 
-    if message.chat.id == -1001827472195 :
+    if message.chat.id == -1001770331451 :
         with open('database/subscribed_users.json', 'r') as file:
             data = json.load(file)
             allowed_ids = data['users']
@@ -537,7 +600,7 @@ def handle_all_messages(message):
                 with open("database/witanime.json", "r", encoding="utf-8") as f:
                     data = json.load(f)
                 anime_name = message.text.lower()
-                closest_animes = process.extractBests(anime_name, [title.lower() for anime in data for title in anime['names']], score_cutoff=80, limit=30)
+                closest_animes = process.extractBests(anime_name, [title.lower() for anime in data for title in anime['names']], score_cutoff=50)
                 if closest_animes:
                     response = f"نتائج البحث عن ❲ {anime_name} ❳"
                     keyboard = InlineKeyboardMarkup()
@@ -672,7 +735,7 @@ def handle_all_messages(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
     global current_page
-    global response
+    global anime_message
     global title
     global episodes
     global user_id
@@ -989,6 +1052,11 @@ def callback_query(call):
         watchedanime = watched[1]
         user_id = call.from_user.id
         username = call.from_user.username
+        ratinggg = "تم مشاهدتها"  # تعيين التقييم هنا (مثال: onestar)
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_to_list2 = add_to_list.format(mention,watchedanime,ratinggg)
+        remove_from_list2 = remove_from_list.format(mention,watchedanime)
+
         with open("database/database.json", "r", encoding="utf-8") as file:
             users = json.load(file)
         if str(user_id) in users:
@@ -996,13 +1064,17 @@ def callback_query(call):
                 if watchedanime in users[str(user_id)]["watched"]:
                     users[str(user_id)]["watched"].remove(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                    bot.send_message(developer_id,remove_from_list2,parse_mode="markdown")
                 else:
                     users[str(user_id)]["watched"].append(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                    bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
             else:
                 users[str(user_id)]["watched"] = [watchedanime]
+                bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         else:
             users[str(user_id)] = {"watched": [watchedanime]}
+            bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
 
         with open("database/database.json", "w", encoding="utf-8") as file:
             json.dump(users, file, indent=4)
@@ -1015,6 +1087,10 @@ def callback_query(call):
         watchedanime = watched[1]
         user_id = call.from_user.id
         username = call.from_user.username
+        ratinggg = "اشاهدها"  # تعيين التقييم هنا (مثال: onestar)
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_to_list2 = add_to_list.format(mention,watchedanime,ratinggg)
+        remove_from_list2 = remove_from_list.format(mention,watchedanime)
         with open("database/database.json", "r", encoding="utf-8") as file:
             users = json.load(file)
 
@@ -1023,15 +1099,17 @@ def callback_query(call):
                 if watchedanime in users[str(user_id)]["watching"]:
                     users[str(user_id)]["watching"].remove(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
-
+                    bot.send_message(developer_id,remove_from_list2,parse_mode="markdown")
                 else:
                     users[str(user_id)]["watching"].append(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                    bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
             else:
                 users[str(user_id)]["watching"] = [watchedanime]
+                bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         else:
             users[str(user_id)] = {"watching": [watchedanime]}
-
+            bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         with open("database/database.json", "w", encoding="utf-8") as file:
             json.dump(users, file, indent=4)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
@@ -1043,6 +1121,10 @@ def callback_query(call):
         watchedanime = watched[1]
         user_id = call.from_user.id
         username = call.from_user.username
+        ratinggg = "المفضلة"  # تعيين التقييم هنا (مثال: onestar)
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_to_list2 = add_to_list.format(mention,watchedanime,ratinggg)
+        remove_from_list2 = remove_from_list.format(mention,watchedanime)
         with open("database/database.json", "r", encoding="utf-8") as file:
             users = json.load(file)
 
@@ -1051,14 +1133,17 @@ def callback_query(call):
                 if watchedanime in users[str(user_id)]["favorite"]:
                     users[str(user_id)]["favorite"].remove(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                    bot.send_message(developer_id,remove_from_list2,parse_mode="markdown")
                 else:
                     users[str(user_id)]["favorite"].append(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                    bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
             else:
                 users[str(user_id)]["favorite"] = [watchedanime]
+                bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         else:
             users[str(user_id)] = {"favorite": [watchedanime]}
-
+            bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         with open("database/database.json", "w", encoding="utf-8") as file:
             json.dump(users, file, indent=4)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
@@ -1070,6 +1155,10 @@ def callback_query(call):
         watchedanime = watched[1]
         user_id = call.from_user.id
         username = call.from_user.username
+        ratinggg = "اشاهدها لاحقا"  # تعيين التقييم هنا (مثال: onestar)
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_to_list2 = add_to_list.format(mention,watchedanime,ratinggg)
+        remove_from_list2 = remove_from_list.format(mention,watchedanime)
         with open("database/database.json", "r", encoding="utf-8") as file:
             users = json.load(file)
 
@@ -1078,13 +1167,17 @@ def callback_query(call):
                 if watchedanime in users[str(user_id)]["upcoming"]:
                     users[str(user_id)]["upcoming"].remove(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                    bot.send_message(developer_id,remove_from_list2,parse_mode="markdown")
                 else:
                     users[str(user_id)]["upcoming"].append(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                    bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
             else:
                 users[str(user_id)]["upcoming"] = [watchedanime]
+                bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         else:
             users[str(user_id)] = {"upcoming": [watchedanime]}
+            bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         with open("database/database.json", "w", encoding="utf-8") as file:
             json.dump(users, file, indent=4)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
@@ -1096,6 +1189,10 @@ def callback_query(call):
         watchedanime = watched[1]
         user_id = call.from_user.id
         username = call.from_user.username
+        ratinggg = "ارغب بمشاهدتها"  # تعيين التقييم هنا (مثال: onestar)
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_to_list2 = add_to_list.format(mention,watchedanime,ratinggg)
+        remove_from_list2 = remove_from_list.format(mention,watchedanime)
         with open("database/database.json", "r", encoding="utf-8") as file:
             users = json.load(file)
 
@@ -1104,13 +1201,17 @@ def callback_query(call):
                 if watchedanime in users[str(user_id)]["want"]:
                     users[str(user_id)]["want"].remove(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                    bot.send_message(developer_id,remove_from_list2,parse_mode="markdown")
                 else:
                     users[str(user_id)]["want"].append(watchedanime)
                     bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                    bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
             else:
                 users[str(user_id)]["want"] = [watchedanime]
+                bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         else:
             users[str(user_id)] = {"want": [watchedanime]}
+            bot.send_message(developer_id,add_to_list2,parse_mode="markdown")
         with open("database/database.json", "w", encoding="utf-8") as file:
             json.dump(users, file, indent=4)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
@@ -1122,9 +1223,14 @@ def callback_query(call):
         watched = call.data.split(">")
         watchedanime = watched[1]
         user_id = call.from_user.id
+        
         with open("database/rate.json", "r", encoding="utf-8") as file:
             data = json.load(file)
         rating = "onestar"  # تعيين التقييم هنا (مثال: onestar)
+        ratinggg = "1"
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_star2 = add_star.format(mention,watchedanime,ratinggg)
+        remove_star2 = remove_star.format(mention,watchedanime)
         # Check if user ID is already in any of the other rating lists
         other_ratings = ["twostar", "threestar", "fourstar", "fivestar"]
         for other_rating in other_ratings:
@@ -1136,14 +1242,16 @@ def callback_query(call):
                                 for s in other_ratings:
                                     try:
                                         item[s][watchedanime].remove(str(user_id))
+                                        bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                                     except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
-                                
+                                    bot.send_message(developer_id,add_star2,parse_mode="markdown")
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+            bot.send_message(developer_id,add_star2,parse_mode="markdown")
         else:
             for item in data:
                 if item.get(rating):
@@ -1151,19 +1259,22 @@ def callback_query(call):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                            bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                            bot.send_message(developer_id,add_star2,parse_mode="markdown")
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
                         bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                        bot.send_message(developer_id,add_star2,parse_mode="markdown")
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
                 bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                bot.send_message(developer_id,add_star2,parse_mode="markdown")
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
@@ -1177,9 +1288,11 @@ def callback_query(call):
 
         with open("database/rate.json", "r", encoding="utf-8") as file:
             data = json.load(file)
-
+        ratinggg = "3"
         rating = "threestar"  # تعيين التقييم هنا (مثال: onestar)
-
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_star2 = add_star.format(mention,watchedanime,ratinggg)
+        remove_star2 = remove_star.format(mention,watchedanime)
         # Check if user ID is already in any of the other rating lists
         other_ratings = ["onestar", "twostar", "fourstar", "fivestar"]
         for other_rating in other_ratings:
@@ -1191,15 +1304,16 @@ def callback_query(call):
                                 for s in other_ratings:
                                     try:
                                         item[s][watchedanime].remove(str(user_id))
+                                        bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                                     except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
-                                
-
+                                    bot.send_message(developer_id,add_star2,parse_mode="markdown")
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+            bot.send_message(developer_id,add_star2,parse_mode="markdown")
         else:
             for item in data:
                 if item.get(rating):
@@ -1207,24 +1321,24 @@ def callback_query(call):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                            bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                            bot.send_message(developer_id,add_star2,parse_mode="markdown")
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
                         bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                        bot.send_message(developer_id,add_star2,parse_mode="markdown")
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
                 bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                bot.send_message(developer_id,add_star2,parse_mode="markdown")
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
@@ -1236,9 +1350,11 @@ def callback_query(call):
 
         with open("database/rate.json", "r", encoding="utf-8") as file:
             data = json.load(file)
-
+        ratinggg = "2"
         rating = "twostar"  # تعيين التقييم هنا (مثال: onestar)
-
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_star2 = add_star.format(mention,watchedanime,ratinggg)
+        remove_star2 = remove_star.format(mention,watchedanime)
         # Check if user ID is already in any of the other rating lists
         other_ratings = ["onestar", "threestar", "fourstar", "fivestar"]
         for other_rating in other_ratings:
@@ -1250,15 +1366,16 @@ def callback_query(call):
                                 for s in other_ratings:
                                     try:
                                         item[s][watchedanime].remove(str(user_id))
+                                        bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                                     except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
-                                
-
+                                    bot.send_message(developer_id,add_star2,parse_mode="markdown")
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+            bot.send_message(developer_id,add_star2,parse_mode="markdown")
         else:
             for item in data:
                 if item.get(rating):
@@ -1266,24 +1383,24 @@ def callback_query(call):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                            bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                            bot.send_message(developer_id,add_star2,parse_mode="markdown")
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
                         bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                        bot.send_message(developer_id,add_star2,parse_mode="markdown")
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
                 bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                bot.send_message(developer_id,add_star2,parse_mode="markdown")
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
@@ -1295,9 +1412,11 @@ def callback_query(call):
 
         with open("database/rate.json", "r", encoding="utf-8") as file:
             data = json.load(file)
-
+        ratinggg = "4"
         rating = "fourstar"  # تعيين التقييم هنا (مثال: onestar)
-
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_star2 = add_star.format(mention,watchedanime,ratinggg)
+        remove_star2 = remove_star.format(mention,watchedanime)
         # Check if user ID is already in any of the other rating lists
         other_ratings = ["onestar", "twostar", "threestar", "fivestar"]
         for other_rating in other_ratings:
@@ -1309,15 +1428,16 @@ def callback_query(call):
                                 for s in other_ratings:
                                     try:
                                         item[s][watchedanime].remove(str(user_id))
+                                        bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                                     except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
-                                
-
+                                    bot.send_message(developer_id,add_star2,parse_mode="markdown")
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+            bot.send_message(developer_id,add_star2,parse_mode="markdown")
         else:
             for item in data:
                 if item.get(rating):
@@ -1325,24 +1445,24 @@ def callback_query(call):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                            bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                            bot.send_message(developer_id,add_star2,parse_mode="markdown")
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
                         bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                        bot.send_message(developer_id,add_star2,parse_mode="markdown")
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
                 bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                bot.send_message(developer_id,add_star2,parse_mode="markdown")
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
@@ -1354,9 +1474,11 @@ def callback_query(call):
 
         with open("database/rate.json", "r", encoding="utf-8") as file:
             data = json.load(file)
-
+        ratinggg = "5"
         rating = "fivestar"  # تعيين التقييم هنا (مثال: onestar)
-
+        mention = f"[{call.from_user.first_name}](tg://user?id={user_id})"
+        add_star2 = add_star.format(mention,watchedanime,ratinggg)
+        remove_star2 = remove_star.format(mention,watchedanime)
         # Check if user ID is already in any of the other rating lists
         other_ratings = ["onestar", "twostar", "threestar", "fourstar"]
         for other_rating in other_ratings:
@@ -1368,15 +1490,16 @@ def callback_query(call):
                                 for s in other_ratings:
                                     try:
                                         item[s][watchedanime].remove(str(user_id))
+                                        bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                                     except:pass
                                 if item.get(rating):
                                     item[rating][watchedanime].append(str(user_id))
-                                
-
+                                    bot.send_message(developer_id,add_star2,parse_mode="markdown")
         # Continue with original code
         if not any(d.get(rating) for d in data):
             data.append({rating: {watchedanime: [str(user_id)]}})
             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+            bot.send_message(developer_id,add_star2,parse_mode="markdown")
         else:
             for item in data:
                 if item.get(rating):
@@ -1384,24 +1507,24 @@ def callback_query(call):
                         if str(user_id) in item[rating][watchedanime]:
                             item[rating][watchedanime].remove(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الازاله من القائمه", show_alert=True)
+                            bot.send_message(developer_id,remove_star2,parse_mode="markdown")
                             break
                         else:
                             item[rating][watchedanime].append(str(user_id))
                             bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                            bot.send_message(developer_id,add_star2,parse_mode="markdown")
                             break
                     else:
                         item[rating][watchedanime] = [str(user_id)]
                         bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
-
+                        bot.send_message(developer_id,add_star2,parse_mode="markdown")
                         break
             else:
                 data.append({rating: {watchedanime: [str(user_id)]}})
-                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه")
-
+                bot.answer_callback_query(call.id, "تمت الاضافه الي القائمه", show_alert=True)
+                bot.send_message(developer_id,add_star2,parse_mode="markdown")
         with open("database/rate.json", "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)    
         bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                     reply_markup=keyboard)
@@ -1602,7 +1725,7 @@ def callback_query(call):
         time.sleep(.1)
         keyboard = create_keyboard(title,episodes, current_page,found_anime,user_id)
         bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                caption=response, reply_markup=keyboard)
+                caption=anime_message, reply_markup=keyboard)
     with open("database/witanime.json", "r", encoding="utf-8") as f:
         data = json.load(f)
         for anime in data:
@@ -1916,6 +2039,8 @@ def bot_func(message):
 ◎ ─━───━─ 𖡦─━───━─ ◎ 
 ⿻ 𝑻𝑯𝑬 𝑹𝑼𝑳𝑬𝑺  ⌯ /rules""", parse_mode="HTML")
                 welcome_message_id = y.message_id
+
+
 def game_1(message):
     emoji = choice(EMOJIS)
     re = f"{emoji}"
@@ -1924,8 +2049,7 @@ def game_1(message):
         message.chat.id,
         f"اسرع واحد يرسل الايموجي : `{emoji}`",
         reply_to_message_id=message.message_id,
-        parse_mode='Markdown'
-    )
+        parse_mode='Markdown')
     bot.register_next_step_handler(ask, check_answer2, re,t3)
 def game_2(message):
     celeb = choice(data)
