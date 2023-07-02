@@ -375,7 +375,7 @@ def News(message):
                 markup = types.InlineKeyboardMarkup(row_width=1)
                 button = types.InlineKeyboardButton(text="𝐙𝐄𝐑𝐎 𝐓𝐖𝐎 ༗.", url="https://t.me/AnimeForestbot")
                 markup.add(button)
-                bot.send_photo(-10011770331451, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=markup)
+                bot.send_photo(-1001770331451, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=markup)
 
                 sent_articles.append(article_id)
                 with open('sent_articles.json', 'w') as file:
