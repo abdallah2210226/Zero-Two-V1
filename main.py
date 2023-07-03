@@ -26,7 +26,8 @@ from random import choice, randint
 from module.var import *
 
 
-TOKEN = "5081332593:AAFXMUVC55Sk2BloKoFzw6HivFTgyErmaHc"
+
+TOKEN = "5194344713:AAH6qgkodHgBj1IT0yIshXZNBe61CoSxhBI"
 bot = telebot.TeleBot(TOKEN)
 bot.set_my_commands(commands=[
     telebot.types.BotCommand('start','إبدأ ⚡️')
@@ -45,6 +46,8 @@ start2 = time.time()
 
 current_page = {}
 episodes = []
+channel_id = -1001770331451
+group_id = -1001658651413
 developer_id = 1448333343
 allowed_ids_file = 'database/allowed_ids.json'
 channels_file = 'database/channels.json'
@@ -119,7 +122,7 @@ def bot_sys_stats():
 def reset_user_data(message):
     user_id = message.from_user.id
     # التحقق من صحة الصلاحيات
-    if user_id != 1448333343:
+    if user_id != developer_id:
         bot.reply_to(message, "You are not authorized to use this command.")
         return
     # استلام معرف المستخدم المراد تصفير بياناته
@@ -141,7 +144,7 @@ def reset_war(user_id):
 def reset_user_data(message):
     user_id = message.from_user.id
     # التحقق من صحة الصلاحيات
-    if user_id != 1448333343:
+    if user_id != developer_id:
         bot.reply_to(message, "You are not authorized to use this command.")
         return
     # استلام معرف المستخدم المراد تصفير بياناته
@@ -190,7 +193,7 @@ def send_welcome(message):
             else:
                 keyboard = create_model_keyboard(user_id)
                 bot.reply_to(message, "اختار موديل:", reply_markup=keyboard)
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 @bot.message_handler(commands=['ping'])
 def pingg(m):
@@ -198,7 +201,7 @@ def pingg(m):
     botusername = bot.get_me().username
     start = time.time()
     current_time = datetime.utcnow()
-    reply = bot.send_message(m.chat.id, "جاري الحساب ... ", reply_to_message_id=m.id)
+    reply = bot.send_message(m.chat.id,calcu, reply_to_message_id=m.id)
     delta_ping = time.time() - start 
     delta_pingg = f"{delta_ping * 1000:.3f}"
     uptime_sec = (current_time - START_TIME).total_seconds()
@@ -207,7 +210,7 @@ def pingg(m):
     ping_message = ping.format(botname,botusername,delta_pingg,UP,DISK,CPU,RAM)
     bot.send_photo(m.chat.id, ping_photo,caption=ping_message ,parse_mode="markdown",reply_to_message_id=m.message_id)
     bot.delete_message(m.chat.id, reply.message_id)
-    if m.from_user.id != 1448333343:
+    if m.from_user.id != developer_id:
         bot.forward_message(developer_id, m.chat.id,m.message_id)
 @bot.message_handler(commands=['start'], chat_types =["private"])
 def handle_start(message):
@@ -219,8 +222,8 @@ def handle_start(message):
     t2 = message.from_user.username
     id_o = message.chat.id
     mention = f"[{f2}](tg://user?id={idd})"
-    divfirst_name = bot.get_chat(1448333343).first_name
-    divfirst_user = bot.get_chat(1448333343).username
+    divfirst_name = bot.get_chat(developer_id).first_name
+    divfirst_user = bot.get_chat(developer_id).username
     botname = bot.get_me().first_name
     botusername = bot.get_me().username
     with open(channels_file, 'r') as file:
@@ -242,7 +245,7 @@ def handle_start(message):
     else:
         save_user_subscription(user_id)
         startkey = types.InlineKeyboardMarkup()
-        dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id=1448333343')
+        dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id={developer_id}')
         ch = types.InlineKeyboardButton("• 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 •",url='https://t.me/Anime1Forest')
         gr = types.InlineKeyboardButton("• 𝐎𝐔𝐑 𝐂𝐇𝐀𝐓 •",url='https://t.me/AnimeForestgroup')
         sug = types.InlineKeyboardButton("• التواصل مع المطور•",callback_data='SUG')
@@ -253,7 +256,7 @@ def handle_start(message):
         startkey.add(gr,sug)
         start_message2 = start_message.format(mention,botname,botusername,divfirst_name,divfirst_user,UP)
         bot.send_photo(message.chat.id,start_photo,caption=start_message2,parse_mode="markdown", reply_markup=startkey)
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 
 @bot.message_handler(commands=['rules'], chat_types=["supergroup","group"])
@@ -271,7 +274,7 @@ def ainmesay(message):
     click3 = types.InlineKeyboardButton(text="⁣• اقتباس من شخصية محددة.",  callback_data="chqouet")
     qoute.add(click1)
     bot.send_message(message.chat.id,"- اختار من الأزرار أدناه",reply_markup=qoute)
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id, message.message_id)
 @bot.message_handler(commands=['avatar'])
 def Get(message):
@@ -283,7 +286,7 @@ def Get(message):
         avtar.add(chng)
         try:    
             bot.send_photo(message.chat.id, avanime, reply_markup=avtar,reply_to_message_id=message.message_id)
-            if message.from_user.id != 1448333343:
+            if message.from_user.id != developer_id:
                     bot.forward_message(developer_id, message.chat.id, message.message_id)
         except:
             n+= 1
@@ -345,9 +348,9 @@ def News(message):
             bot.send_photo(message.chat.id, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=startkey)
     except Exception as e:
         bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
-        bot.send_message(message.chat.id, "حدث خطأ")
+        bot.send_message(message.chat.id, error)
 
-    if message.from_user.id == 1448333343:
+    if message.from_user.id == developer_id:
         try:
             response = requests.get(
                 'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/ar-SA/stories/search',
@@ -375,16 +378,16 @@ def News(message):
                 markup = types.InlineKeyboardMarkup(row_width=1)
                 button = types.InlineKeyboardButton(text="𝐙𝐄𝐑𝐎 𝐓𝐖𝐎 ༗.", url="https://t.me/AnimeForestbot")
                 markup.add(button)
-                bot.send_photo(-1001770331451, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=markup)
+                bot.send_photo(-1001772490420, thumbnail_url, caption=caption, parse_mode="MarkdownV2", reply_markup=markup)
 
                 sent_articles.append(article_id)
                 with open('sent_articles.json', 'w') as file:
                     json.dump(sent_articles, file)
         except Exception as e:
             bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
-            bot.send_message(message.chat.id, "حدث خطأ")
+            bot.send_message(message.chat.id, error)
 
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id, message.message_id)
 
 @bot.message_handler(commands=['anime','search'], chat_types =["private"])
@@ -415,7 +418,7 @@ def handle_anime_command(message):
         back = telebot.types.InlineKeyboardButton(f'رجوع ⪼', callback_data='back')
         markup.add(alphabet,ge,no3,back)
         bot.send_photo(message.chat.id,search,parse_mode="markdown", reply_markup=markup)
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 @bot.message_handler(commands=['admin'], chat_types =["private"])
 def handle_admin(message):
@@ -447,7 +450,7 @@ def handle_admin(message):
         bot.reply_to(message, "اختر الإجراء المطلوب:", reply_markup=markup)
     else:
         bot.reply_to(message, "عذرًا، هذا الأمر مخصص للمشرفين والمطور فقط.")
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 @bot.message_handler(commands=['id', 'Id'])
 def id(message):
@@ -487,7 +490,7 @@ def id(message):
             bioo = bio
         id_msgg = id_msg.format(message.from_user.id,message.from_user.first_name,userr,message.from_user.id,typ,a,bioo)
         bot.send_photo(message.chat.id,user_profile.photos[0][0].file_id,id_msgg,parse_mode="HTML", reply_to_message_id=message.message_id)
-    if message.from_user.id != 1448333343:
+    if message.from_user.id != developer_id:
         bot.forward_message(developer_id, message.chat.id,message.message_id)
 @bot.message_handler(commands=['wit'])
 def start(message):
@@ -532,7 +535,7 @@ def profile(message):
 
 @bot.channel_post_handler(func=lambda message: True)
 def repeat_all_messages(message): 
-    if message.chat.id == -1001770331451 :
+    if message.chat.id == channel_id :
         with open('database/subscribed_users.json', 'r') as file:
             data = json.load(file)
             allowed_ids = data['users']
@@ -619,20 +622,21 @@ def handle_all_messages(message):
                 else:
                     bot.delete_message(message.chat.id,  sear.message_id)
                     bot.send_message(chat_id=message.chat.id, text="عذرًا، لم يتم العثور على نتائج مطابقة.")
-        if message.from_user.id != 1448333343:
+        if message.from_user.id != developer_id:
             bot.forward_message(developer_id, message.chat.id,message.message_id)
     if message.text == "المطور" or message.text == "مطور" or message.text == "المبرمج":
             p3 = types.InlineKeyboardMarkup()
-            e4 = types.InlineKeyboardButton(text="المطور .", url="tg://user?id=1448333343")
+            e4 = types.InlineKeyboardButton(text="المطور .", url=f"tg://user?id={developer_id}")
             p3.add(e4)
             botname = bot.get_me().first_name
             botusername = bot.get_me().username
-            divfirst_name = bot.get_chat(1448333343).first_name
-            bio = bot.get_chat(1448333343).bio
+            divfirst_name = bot.get_chat(developer_id).first_name
+            divfirst_username = bot.get_chat(developer_id).username
+            bio = bot.get_chat(developer_id).bio
             h = f"""
 • ❲ N𝐚𝐦𝐞 𝐛𝐨𝐭 ↦ [{botname}](https://t.me/{botusername}) ❳
 ━━━━━━━━━━━
-- N𝐚𝐦𝐞 ↦ [{divfirst_name}](https://t.me/YUUI4I)
+- N𝐚𝐦𝐞 ↦ [{divfirst_name}](https://t.me/{divfirst_username})
 - B𝐢𝐨 ↦ {bio}"""
             bot.send_photo(message.chat.id,photo="https://telegra.ph//file/9171b9ddd4ff3ce53ff62.jpg",caption={h},
                            parse_mode="markdown",
@@ -820,11 +824,11 @@ def callback_query(call):
             t2 = call.from_user.username
             id_o = call.chat.id
             mention = f"[{f2}](tg://user?id={idd})"
-            divfirst_name = bot.get_chat(1448333343).first_name
+            divfirst_name = bot.get_chat(developer_id).first_name
             botname = bot.get_me().first_name
             botusername = bot.get_me().username
             startkey = types.InlineKeyboardMarkup()
-            dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id=1448333343')
+            dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id={developer_id}')
             ch = types.InlineKeyboardButton("• 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 •",url='https://t.me/Anime1Forest')
             gr = types.InlineKeyboardButton("• 𝐎𝐔𝐑 𝐂𝐇𝐀𝐓 •",url='https://t.me/AnimeForestgroup')
             sug = types.InlineKeyboardButton("• التواصل مع المطور•",callback_data='SUG')
@@ -833,7 +837,7 @@ def callback_query(call):
             startkey.add(search_button, profile_button)
             startkey.add(dev,ch)
             startkey.add(gr,sug)
-            divfirst_user = bot.get_chat(1448333343).username
+            divfirst_user = bot.get_chat(developer_id).username
             start_message2 = start_message.format(mention,botname,botusername,divfirst_name,divfirst_user,UP)
             bot.send_photo(call.message.chat.id,start_photo,caption=start_message2,parse_mode="markdown", reply_markup=startkey)
         else:
@@ -1565,8 +1569,8 @@ def callback_query(call):
         f2 = call.from_user.first_name
         t2 = call.from_user.username
         mention = f"[{f2}](tg://user?id={idd})"
-        divfirst_name = bot.get_chat(1448333343).first_name
-        divfirst_user = bot.get_chat(1448333343).username
+        divfirst_name = bot.get_chat(developer_id).first_name
+        divfirst_user = bot.get_chat(developer_id).username
         botname = bot.get_me().first_name
         botusername = bot.get_me().username
         with open(channels_file, 'r') as file:
@@ -1589,7 +1593,7 @@ def callback_query(call):
         else:
             save_user_subscription(user_id)
             startkey = types.InlineKeyboardMarkup()
-            dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id=1448333343')
+            dev = types.InlineKeyboardButton("• 𝗗𝗘𝗩 •",url=f'tg://user?id=developer_id')
             ch = types.InlineKeyboardButton("• 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 •",url='https://t.me/Anime1Forest')
             gr = types.InlineKeyboardButton("• 𝐎𝐔𝐑 𝐂𝐇𝐀𝐓 •",url='https://t.me/AnimeForestgroup')
             sug = types.InlineKeyboardButton("• التواصل مع المطور•",callback_data='SUG')
@@ -1782,7 +1786,7 @@ def callback_query(call):
 
                             return
     if call.data == 'reset_all_img':
-        if user_id == 1448333343:
+        if user_id == developer_id:
             for user in user_data:
                 user['photos_used'] = 0
                 allowed_ids = user['user_id']
@@ -1790,7 +1794,7 @@ def callback_query(call):
             save_user_data()
             bot.send_message(call.message.chat.id, text=f"images has been reset for {len(user_data)} users.")           
     if call.data == 'reset_all_war':
-        if user_id == 1448333343:
+        if user_id == developer_id:
             for user in user_data:
                 user['warnings'] = 0
                 allowed_ids = user['user_id']
@@ -1955,22 +1959,25 @@ welcome_message_id = None  # إنشاء متغير لتخزين معرف الر�
 
 @bot.message_handler(content_types=['new_chat_members', 'left_chat_member'])
 def bot_func(message):
-    target_group_id = -1001658651413
-    if message.content_type == 'new_chat_members' and message.chat.id == target_group_id:
+    if message.content_type == 'new_chat_members' and message.chat.id == group_id:
         bot.delete_message(message.chat.id, message.message_id)
         if message.content_type == 'new_chat_members':
             global welcome_message_id  # تعيين المتغير كـ global للوصول إليه خارج الدالة
-            user = message.from_user.username
+            user1 = message.from_user.username
+            if user1 == None :
+                user = "لايوجد"
+            else:
+                user = "@"+user1
             id = message.from_user.id
-            bio = bot.get_chat(message.from_user.id).bio
             typ = message.chat.type
             fr = message.from_user.first_name
             user_profile = bot.get_user_profile_photos(id)
+            dev_first_name = bot.get_chat(developer_id).first_name
             chat_id = message.chat.id
             group_user = bot.get_chat(chat_id).username
             group_name = bot.get_chat(chat_id).first_name
-            CH_username = bot.get_chat(-1001770331451).username
-            CH_name = bot.get_chat(-1001770331451).title
+            CH_username = bot.get_chat(channel_id).username
+            CH_name = bot.get_chat(channel_id).title
             if welcome_message_id:
                 bot.delete_message(message.chat.id, welcome_message_id)
             if user_profile.total_count == 0:
@@ -1984,17 +1991,8 @@ def bot_func(message):
                 I1.text((922, 477), u"{}".format(bidi_text), font=myFont, fill=(250, 250, 250), stroke_width=3,
                         stroke_fill=(19, 44, 108))
                 img.save("greeting/greetingwithoutpfp.jpg")
-                y = bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithoutpfp.jpg', 'rb'),caption=f"""
-𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 <a href="t.me/{CH_username}">{message.chat.title}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑵𝑨𝑴𝑬  ⌯ <a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
-⿻ 𝐔𝐒𝐄𝐑 ⌯ @{user}
-⿻ 𝐈𝐃  ⌯ <code>{message.from_user.id}</code>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑻𝑶 𝑪𝑶𝑵𝑻𝑨𝑪𝑻 𝑻𝑯𝑬 𝑶𝑾𝑵𝑬𝑹 ⌯ <a href="tg://user?id=1448333343">{bot.get_chat(1448333343).first_name}</a>
-⿻ 𝑪𝑯𝑨𝑵𝑵𝑬𝑳 ⌯ <a href="t.me/{CH_username}">{CH_name}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑻𝑯𝑬 𝑹𝑼𝑳𝑬𝑺  ⌯ /rules""", parse_mode="HTML")
+                welcome_msg2 = welcome_msg.format(CH_username,typ,id,fr,user,id,developer_id,dev_first_name,CH_username,CH_name)
+                y = bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithoutpfp.jpg', 'rb'),caption=welcome_msg2, parse_mode="HTML")
                 welcome_message_id = y.message_id
 
             if user_profile.total_count != 0:
@@ -2026,18 +2024,8 @@ def bot_func(message):
                 I1.text((922, 477), u"{}".format(bidi_text), font=myFont, fill=(250, 250, 250), stroke_width=3,
                         stroke_fill=(19, 44, 108))
                 img.save("greeting/greetingwithpfp.jpg")
-
-                bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithpfp.jpg', 'rb'),caption=f"""
-𝑾𝑬𝑳𝑪𝑶𝑴𝑬 𝑻𝑶 <a href="t.me/{CH_username}">{message.chat.title}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑵𝑨𝑴𝑬  ⌯<a href="tg://user?id={message.from_user.id}">{message.from_user.first_name}</a>
-⿻ 𝐔𝐒𝐄𝐑 ⌯ @{user}
-⿻ 𝐈𝐃  ⌯ <code>{message.from_user.id}</code>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑻𝑶 𝑪𝑶𝑵𝑻𝑨𝑪𝑻 𝑻𝑯𝑬 𝑶𝑾𝑵𝑬𝑹 ⌯ <a href="tg://user?id=1448333343">{bot.get_chat(1448333343).first_name}</a>
-⿻ 𝑪𝑯𝑨𝑵𝑵𝑬𝑳 ⌯ <a href="t.me/{CH_username}">{CH_name}</a>
-◎ ─━───━─ 𖡦─━───━─ ◎ 
-⿻ 𝑻𝑯𝑬 𝑹𝑼𝑳𝑬𝑺  ⌯ /rules""", parse_mode="HTML")
+                welcome_msg2 = welcome_msg.format(CH_username,typ,id,fr,user,id,developer_id,dev_first_name,CH_username,CH_name)
+                y = bot.send_photo(message.chat.id,photo=open(r'greeting/greetingwithoutpfp.jpg', 'rb'),caption=welcome_msg2, parse_mode="HTML")
                 welcome_message_id = y.message_id
 
 
@@ -2192,7 +2180,7 @@ def character(message):
         bot.send_message(message.chat.id,
                          f"═══════ ≪ °❈° ≫ ═══════\n⛩┇› A Random Quote Was Found For You\n⛩┇› Anime : {name} .\n⛩┇› Say : {say} .\n⛩┇› Quote : \n`{quo}`\n        ══════════════\n⛩┇› أخترت لك إقتباس 🗣\n⛩┇› من أنمي : {name} .\n⛩┇› القائل : {say} .\n⛩┇› الأقتباس :\n `{translation.text}` .\n═══════ ≪ °❈° ≫ ═══════",
                          reply_to_message_id=message.message_id, parse_mode="markdown")
-        if message.from_user.id != 1448333343:
+        if message.from_user.id != developer_id:
             bot.forward_message(developer_id, message.chat.id, message.message_id)
     except Exception as e:
         bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
@@ -2212,13 +2200,13 @@ def animeee(message):
         bot.send_message(message.chat.id,
                          f"═══════ ≪ °❈° ≫ ═══════\n⛩┇› A Random Quote Was Found For You\n⛩┇› Anime : {name} .\n⛩┇› Say : {say} .\n⛩┇› Quote : \n`{quo}`\n        ══════════════\n⛩┇› أخترت لك إقتباس 🗣\n⛩┇› من أنمي : {name} .\n⛩┇› القائل : {say} .\n⛩┇› الأقتباس :\n `{translation.text}` .\n═══════ ≪ °❈° ≫ ═══════",
                          reply_to_message_id=message.message_id, parse_mode="markdown")
-        if message.from_user.id != 1448333343:
+        if message.from_user.id != developer_id:
             bot.forward_message(developer_id, message.chat.id, message.message_id)
     except Exception as e:
         bot.send_message(developer_id, f'{e}\nError on line {sys.exc_info()[-1].tb_lineno}')
         bot.send_message(message.chat.id,"لايوجد")
 def st(message):
-    bot.forward_message("1448333343", message.chat.id, message.message_id)
+    bot.forward_message("developer_id", message.chat.id, message.message_id)
     m = message.text
     abd = types.InlineKeyboardMarkup()
     a13 = types.InlineKeyboardButton("• ارسل الرد  •", callback_data="a13")
@@ -2228,7 +2216,7 @@ def st(message):
     t2 = message.from_user.username
     mention = f"[{f2}](tg://user?id={id})"
     if message.from_user.id == id:
-        bot.send_message(1448333343, f"رسالة واردة من {mention}\nالأسم : {mention}\nاليوزر : @{t2}\nالاي دي : "
+        bot.send_message(developer_id, f"رسالة واردة من {mention}\nالأسم : {mention}\nاليوزر : @{t2}\nالاي دي : "
                                      f"`{id}`\nالرسالة هي "
                                      f":\n\n{m}\n\n`ردد {id}` + الرسالة", reply_markup=abd, parse_mode="markdown")
     bot.send_message(message.chat.id,
@@ -2441,13 +2429,17 @@ def save_user_subscription(user_id):
             file.seek(0)
             json.dump(data, file, indent=4)
             name = bot.get_chat(user_id).first_name
-            user = bot.get_chat(user_id).username
+            user1 = bot.get_chat(user_id).username
+            if user1 == None :
+                user = "لايوجد"
+            else :
+                user = "@" + user1
             mention = f"[{name}](tg://user?id={user_id})"
             bot.send_message(developer_id,f"""
 ⚠️𝐒𝐎𝐌𝐄𝐎𝐍𝐄 𝐒𝐓𝐀𝐑𝐓 𝐓𝐇𝐄 𝐁𝐎𝐓⚠️
 ╭━━❰ɴᴇᴡ ᴍᴇᴍʙᴇʀ ɪɴғᴏʀᴍᴀᴛɪᴏɴ❱━━➣
 ┣⪼  The name :  {mention}
-┣⪼ User :  @{user}
+┣⪼ User :  {user}
 ┣⪼  ID : `{user_id}`
 ┣⪼  total number of members :  ({count})
 ╰━━━━━━━━━━━━━━━━➣""",parse_mode="markdown")
@@ -2464,14 +2456,15 @@ def view_subscribed_users(message):
     if subscribed_users:
         sub_info = []
         for sub_id in subscribed_users:
-            sub_user = bot.get_chat(sub_id)
-            sub_fr = bot.get_chat(sub_id).first_name
+            try:
+                sub_user = bot.get_chat(sub_id)
+                sub_fr = bot.get_chat(sub_id).first_name
 
-            if sub_user.username:
-                sub_info.append(f"ID: <code>{sub_id}</code>\nUsername: @{sub_user.username}\nName: <a href='tg://user?id={sub_id}'>{sub_fr}</a>")
-            else:
-                sub_info.append(f"ID: <code>{sub_id}</code>\nName: <a href='tg://user?id={sub_id}'>{sub_fr}</a>")
-
+                if sub_user.username:
+                    sub_info.append(f"ID: <code>{sub_id}</code>\nUsername: @{sub_user.username}\nName: <a href='tg://user?id={sub_id}'>{sub_fr}</a>")
+                else:
+                    sub_info.append(f"ID: <code>{sub_id}</code>\nName: <a href='tg://user?id={sub_id}'>{sub_fr}</a>")
+            except:pass
         sub_text = "\n\n".join(sub_info)
         bot.reply_to(message, f"المشتركين في البوت :\n\n{sub_text}", parse_mode="HTML")
     else:
