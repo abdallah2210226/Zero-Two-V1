@@ -27,7 +27,7 @@ from module.var import *
 
 
 
-TOKEN = "5194344713:AAH6qgkodHgBj1IT0yIshXZNBe61CoSxhBI"
+TOKEN = "5081332593:AAFXMUVC55Sk2BloKoFzw6HivFTgyErmaHc"
 bot = telebot.TeleBot(TOKEN)
 bot.set_my_commands(commands=[
     telebot.types.BotCommand('start','إبدأ ⚡️')
