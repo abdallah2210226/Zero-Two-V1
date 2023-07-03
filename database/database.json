@@ -31,9 +31,7 @@
             "Enen no Shouboutai: Ni no Shou",
             "Naruto: Shippuuden",
             "Blue Lock",
-            "One Piece",
-            "Naruto",
-            "Vinland Saga Season 2"
+            "One Piece"
         ],
         "watching": [
             "Black Clover",
@@ -49,8 +47,8 @@
             "Blue Lock",
             "Naruto: Shippuuden",
             "One Piece",
-            "Vinland Saga Season 2",
-            "Vinland Saga"
+            "Vinland Saga",
+            "Naruto"
         ],
         "watched": [
             "Aiyou de Mishi",
@@ -70,6 +68,9 @@
             "Naruto",
             "Vinland Saga Season 2",
             "Vinland Saga"
+        ],
+        "want": [
+            "Naruto"
         ]
     },
     "1297503311": {
@@ -147,5 +148,10 @@
     },
     "1894578630": {
         "favorite": []
+    },
+    "1803934964": {
+        "favorite": [
+            "Shingeki no Kyojin"
+        ]
     }
 }
