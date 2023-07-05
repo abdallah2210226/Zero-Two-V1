@@ -13,3 +13,4 @@ python-bidi
 arabic-reshaper
 fuzzywuzzy
 python-Levenshtein
+pymongo
