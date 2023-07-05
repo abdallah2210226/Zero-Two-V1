@@ -35,7 +35,7 @@ db = client["anime_database"]
 collection = db["rating_collection"]
 
 
-TOKEN = "5081332593:AAGp38pGo3qGwNu-w50TRnye-Q004opE1uE"
+TOKEN = "5081332593:AAGjf-LMbRdsn9oQLRLXxIl-ttlTsfSkncM"
 bot = telebot.TeleBot(TOKEN)
 bot.set_my_commands(commands=[
     telebot.types.BotCommand('start','إبدأ ⚡️')
