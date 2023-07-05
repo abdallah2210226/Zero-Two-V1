@@ -22,7 +22,6 @@ from kt_tweet_sowal import *
 import random
 import unicodedata
 from random import choice, randint
-
 from module.var import *
 import pymongo
 from pymongo import MongoClient
